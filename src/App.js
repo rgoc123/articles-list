@@ -36,7 +36,8 @@ class App extends Component {
   // to make the function more resuseble.
   createArticleRows(loadNumber) {
     let articlesList = [];
-    let end = loadNumber * 10;
+    // This is to show 10 new articles, or however many articles are remaining if it's less than 10
+    let end = loadNumber * 10 < articles.length ? loadNumber * 10 : articles.length;
 
     for (let i = 0; i < end; i++) {
       let article = articles[i];

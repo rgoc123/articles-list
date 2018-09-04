@@ -38,6 +38,7 @@ class App extends Component {
     let articlesList = [];
     // This is to show 10 new articles, or however many articles are remaining if it's less than 10
     let end = loadNumber * 10 < articles.length ? loadNumber * 10 : articles.length;
+    // May need to extend above to set the display state for the load more button
 
     for (let i = 0; i < end; i++) {
       let article = articles[i];
@@ -68,6 +69,18 @@ class App extends Component {
     return articlesList;
   }
 
+  testXHR() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState === 4 && this.status === 200) {
+        var obj = this.response;
+        console.log(obj);
+      }
+    };
+    xhttp.open("GET", "/more-articles.json", true);
+    xhttp.send();
+  }
+
   render() {
     return (
       <div className="App">
@@ -78,6 +91,10 @@ class App extends Component {
         <button onClick={() => this.loadMoreArticles()}>Load More</button>
       </div>
     );
+  }
+
+  componentDidUpdate() {
+    this.testXHR();
   }
 }
 

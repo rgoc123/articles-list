@@ -55,10 +55,13 @@ class App extends Component {
     if (loadNumber * 10 < arrayOfArticles.length && this.state.beyondBootStrap === false) {
       end = loadNumber * 10
       newState['loadNumber'] = loadNumber + 1;
-    } else {
+    } else if (this.state.beyondBootStrap === false) {
       end = arrayOfArticles.length;
       newState['loadNumber'] = 1;
       newState['beyondBootStrap'] = true;
+    } else {
+      end = arrayOfArticles.length;
+      newState['loadNumber'] += 1;
     }
     // May need to extend above to set the display state for the load more button
 
@@ -96,7 +99,7 @@ class App extends Component {
     let xhttp = new XMLHttpRequest();
     let oldArticles = this.state.articles.slice(0);
     let newArticles = [];
-    let start = this.state.loadNumber * 10 - 10;
+    // let start = this.state.loadNumber * 10 - 10;
     let end = this.state.loadNumber * 10
 
     xhttp.onreadystatechange = function() {
@@ -104,7 +107,7 @@ class App extends Component {
         var obj = xhttp.response;
         // console.log([start, end]);
         // console.log(JSON.parse(obj).slice(start, end));
-        newArticles = oldArticles.concat(JSON.parse(obj).slice(start, end));
+        newArticles = oldArticles.concat(JSON.parse(obj).slice(0, end));
         // return newArticles;
       }
     }.bind(this);

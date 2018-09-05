@@ -10,7 +10,7 @@ class App extends Component {
       articles: articles,
       articlesList: [],
       loadNumber: 0,
-      beyondBootStrap: false
+      beyondBootStrap: false,
     };
     this.testXHR = this.testXHR.bind(this);
   }
@@ -35,7 +35,7 @@ class App extends Component {
     if (this.state.beyondBootStrap === false) {
       this.createArticleRows(newLoadNumber, this.state.articles);
       // this.setState({loadNumber: newLoadNumber});
-    } else {
+    } else if (this.testXHR().length !== 0) {
       console.log(this.testXHR());
       this.createArticleRows(newLoadNumber, this.testXHR());
       // run createArticleRows with the returned results from testXHR
@@ -52,13 +52,29 @@ class App extends Component {
     let newState = this.state;
     // This is to show 10 new articles, or however many articles are remaining if it's less than 10
     let end;
+
+    // If beyondBootStrap equals true and loadNumber * 10 > arrayOfArticles.length - articles.length
+    // 1 - 10
+    // 2 - 20
+    // 3 - 30
+    // 4 - 30
+    // If the loadNumber * 10 is greater than the number of new articles, switch button to disabled
+    // 20, 26
+
+    // If loadNumber * 10 is greater than articles.length and testXHR.length is 0 or undefined
+      // set button to disabled
+
     if (loadNumber * 10 < arrayOfArticles.length && this.state.beyondBootStrap === false) {
       end = loadNumber * 10
       newState['loadNumber'] = loadNumber + 1;
     } else if (this.state.beyondBootStrap === false) {
       end = arrayOfArticles.length;
-      newState['loadNumber'] = 1;
-      newState['beyondBootStrap'] = true;
+      if (this.testXHR().length === 0) {
+        document.getElementById('load-more').disabled = true;
+      } else {
+        newState['loadNumber'] = 1;
+        newState['beyondBootStrap'] = true;
+      }
     } else {
       end = arrayOfArticles.length;
       newState['loadNumber'] += 1;
@@ -100,15 +116,33 @@ class App extends Component {
     let oldArticles = this.state.articles.slice(0);
     let newArticles = [];
     // let start = this.state.loadNumber * 10 - 10;
-    let end = this.state.loadNumber * 10
 
     xhttp.onreadystatechange = function() {
       if (xhttp.readyState === 4 && xhttp.status === 200) {
         var obj = xhttp.response;
         // console.log([start, end]);
         // console.log(JSON.parse(obj).slice(start, end));
-        newArticles = oldArticles.concat(JSON.parse(obj).slice(0, end));
-        // return newArticles;
+
+        if (obj !== "") {
+          let newArticlesJSON = JSON.parse(obj);
+          // This ternary helps when the number of more-articles isn't a
+          // multiple of 10 (e.g. if there are 26 artiles, it will set the
+          // end at 26 instead of 30);
+          let end = this.state.loadNumber * 10 > newArticlesJSON.length ?
+            newArticlesJSON.length : this.state.loadNumber * 10;
+
+          // This sets the button to disabled if we've added all the articles
+          // from more articles. beyondBootStrap is included to ensure that
+          // the user is actually beyondBootStrap, otherwise there can be
+          // a conflict on line 72 when we run testXHR to see if it more-
+          // articles exist, causing that run to set the button to disabled.
+          if (end >= newArticlesJSON.length && this.state.beyondBootStrap === true) {
+            debugger
+            document.getElementById('load-more').disabled = true;
+          }
+          newArticles = oldArticles.concat(newArticlesJSON.slice(0, end));
+          // return newArticles;
+        }
       }
     }.bind(this);
     xhttp.open("GET", "/more-articles.json", false);
@@ -126,7 +160,7 @@ class App extends Component {
         <ul>
           {this.state.articlesList}
         </ul>
-        <button onClick={() => this.loadMoreArticles()}>Load More</button>
+        <button id="load-more" onClick={() => this.loadMoreArticles()}>Load More</button>
       </div>
     );
   }

@@ -172,7 +172,10 @@ class App extends Component {
             <button onClick={() => this.sortArticles('words', 'sort')}>Sort</button>
             <button onClick={() => this.sortArticles('words', 'reverse')}>Reverse</button>
           </div>
-          <div>Submitted</div>
+          <div>Submitted
+            <button onClick={() => this.sortArticles('submitted', 'sort')}>Sort</button>
+            <button onClick={() => this.sortArticles('submitted', 'reverse')}>Reverse</button>
+          </div>
         </div>
         <ul>
           {this.state.articlesList}
@@ -234,6 +237,12 @@ class App extends Component {
         newList = newState['wordsSortedArticles'];
       } else {
         newList = newState['wordsReverseSortedArticles'];
+      }
+    } else {
+      if (sortType === 'sort') {
+        newList = newState['submittedSortedArticles'];
+      } else {
+        newList = newState['submittedReverseSortedArticles'];
       }
     }
 

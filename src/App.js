@@ -7,9 +7,11 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      articlesList: articles.slice(0,9),
-      loadNumber: 1
+      articles: articles,
+      articlesList: [],
+      loadNumber: 0
     };
+    this.testXHR = this.testXHR.bind(this);
   }
 
   // Function for adding more articles
@@ -27,7 +29,14 @@ class App extends Component {
       // difference in performance.
   loadMoreArticles() {
     let newLoadNumber = this.state.loadNumber + 1;
-    this.setState({loadNumber: newLoadNumber});
+
+    console.log(newLoadNumber);
+    if (newLoadNumber * 10 > this.state.articles.length) {
+      this.testXHR();
+    } else {
+      this.createArticleRows(newLoadNumber);
+      this.setState({loadNumber: newLoadNumber});
+    }
   }
 
 
@@ -66,36 +75,47 @@ class App extends Component {
       );
     }
 
-    return articlesList;
+    this.setState({articlesList: articlesList});
   }
 
   testXHR() {
     let xhttp = new XMLHttpRequest();
+    let articles = this.state.articles.slice(0);
     xhttp.onreadystatechange = function() {
-      if (this.readyState === 4 && this.status === 200) {
-        var obj = this.response;
+      if (xhttp.readyState === 4 && xhttp.status === 200) {
+        var obj = xhttp.response;
         console.log(obj);
+        articles = articles.concat(JSON.parse(obj));
+        this.setState({articles: articles});
       }
-    };
+    }.bind(this);
     xhttp.open("GET", "/more-articles.json", true);
     xhttp.send();
   }
 
   render() {
+    console.log(this.state.articles);
     return (
       <div className="App">
         <h1>Hello World!</h1>
         <ul>
-          {this.createArticleRows(this.state.loadNumber)}
+          {this.state.articlesList}
         </ul>
         <button onClick={() => this.loadMoreArticles()}>Load More</button>
       </div>
     );
   }
 
-  componentDidUpdate() {
-    this.testXHR();
+  componentDidMount() {
+    if (this.state.loadNumber === 0) {
+      this.createArticleRows(1);
+      this.setState({loadNumber: 1});
+    }
   }
+
+  // componentDidUpdate() {
+  //   this.testXHR();
+  // }
 }
 
 export default App;

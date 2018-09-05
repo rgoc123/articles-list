@@ -16,3 +16,13 @@ img {
 .article-item {
   display: flex;
 }
+
+.col-headers {
+  display: flex;
+}
+
+.col-headers div {
+  width: 200px;
+  height: 50px;
+  border: 1px solid black;
+}

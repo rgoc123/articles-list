@@ -159,11 +159,21 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
+    console.log(this.state.articlesList);
     // console.log(this.state.loadNumber);
     return (
       <div className="App">
         <h1>Hello World!</h1>
+        <div className="col-headers">
+          <div>Image</div>
+          <div>Article</div>
+          <div>Author</div>
+          <div>Words
+            <button onClick={() => this.sortArticles('words', 'sort')}>Sort</button>
+            <button onClick={() => this.sortArticles('words', 'reverse')}>Reverse</button>
+          </div>
+          <div>Submitted</div>
+        </div>
         <ul>
           {this.state.articlesList}
         </ul>
@@ -213,6 +223,49 @@ class App extends Component {
     // });
     return [wordsSortedArticles, wordsReverseSortedArticles, submittedSortedArticles,
       submittedReverseSortedArticles];
+  }
+
+  sortArticles(sortCategory, sortType) {
+    let newState = this.state;
+
+    let newList;
+    if (sortCategory === 'words') {
+      if (sortType === 'sort') {
+        newList = newState['wordsSortedArticles'];
+      } else {
+        newList = newState['wordsReverseSortedArticles'];
+      }
+    }
+
+    let newArticlesList = [];
+    for (let i = 0; i < newList.length; i++) {
+      let article = newList[i];
+      newArticlesList.push(
+        <li className="article-li" key={i}>
+          <div className="article-item">
+            <img src={article.image} alt={article.title} />
+            <div className="article-info">
+              <a href={article.url} target="_blank">{article.title}</a>
+              <div>Shares: {article.shares}</div>
+              <div>Views: {article.views}</div>
+            </div>
+            <div className="author">
+              <div>{article.profile.first_name}</div>
+              <div>{article.profile.last_name}</div>
+            </div>
+            <div className="words">
+              <div>{article.words}</div>
+            </div>
+            <div>
+              <div>{article.publish_at}</div>
+            </div>
+          </div>
+        </li>
+      );
+    }
+    newState['articlesList'] = newArticlesList;
+    // debugger
+    this.setState(newState);
   }
 
   componentDidMount() {

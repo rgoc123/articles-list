@@ -86,11 +86,13 @@ class App extends Component {
       articlesList.push(
         <li className="article-li" key={i}>
           <div className="article-item">
-            <img src={article.image} alt={article.title} />
-            <div className="article-info">
-              <a href={article.url} target="_blank">{article.title}</a>
-              <div>Shares: {article.shares}</div>
-              <div>Views: {article.views}</div>
+            <div className="article-info-container">
+              <img src={article.image} alt={article.title} />
+              <div className="article-info">
+                <a href={article.url} target="_blank">{article.title}</a>
+                <div>Shares: {article.shares}</div>
+                <div>Views: {article.views}</div>
+              </div>
             </div>
             <div className="author">
               <div>{article.profile.first_name}</div>
@@ -99,7 +101,7 @@ class App extends Component {
             <div className="words">
               <div>{article.words}</div>
             </div>
-            <div>
+            <div className="submitted">
               <div>{article.publish_at}</div>
             </div>
           </div>
@@ -165,14 +167,13 @@ class App extends Component {
       <div className="App">
         <h1>Hello World!</h1>
         <div className="col-headers">
-          <div>Image</div>
-          <div>Article</div>
-          <div>Author</div>
-          <div>Words
+          <div id="article-header">Article</div>
+          <div id="author-header">Author</div>
+          <div id="words-header">Words
             <button onClick={() => this.sortArticles('words', 'sort')}>Sort</button>
             <button onClick={() => this.sortArticles('words', 'reverse')}>Reverse</button>
           </div>
-          <div>Submitted
+          <div id="submitted-header">Submitted
             <button onClick={() => this.sortArticles('submitted', 'sort')}>Sort</button>
             <button onClick={() => this.sortArticles('submitted', 'reverse')}>Reverse</button>
           </div>
@@ -252,11 +253,13 @@ class App extends Component {
       newArticlesList.push(
         <li className="article-li" key={i}>
           <div className="article-item">
-            <img src={article.image} alt={article.title} />
-            <div className="article-info">
-              <a href={article.url} target="_blank">{article.title}</a>
-              <div>Shares: {article.shares}</div>
-              <div>Views: {article.views}</div>
+            <div className="article-info-container">
+              <img src={article.image} alt={article.title} />
+              <div className="article-info">
+                <a href={article.url} target="_blank">{article.title}</a>
+                <div>Shares: {article.shares}</div>
+                <div>Views: {article.views}</div>
+              </div>
             </div>
             <div className="author">
               <div>{article.profile.first_name}</div>
@@ -265,7 +268,7 @@ class App extends Component {
             <div className="words">
               <div>{article.words}</div>
             </div>
-            <div>
+            <div className="submitted">
               <div>{article.publish_at}</div>
             </div>
           </div>

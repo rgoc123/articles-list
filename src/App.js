@@ -152,7 +152,7 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.articles);
+    console.log(this.state);
     // console.log(this.state.loadNumber);
     return (
       <div className="App">
@@ -165,7 +165,43 @@ class App extends Component {
     );
   }
 
+  // Could just create these every time new articles are generated
+  // Replace articles with articlesList
+  createSortedArticleLists() {
+    let wordsArticlesObj = {};
+    let submittedArticlesObj = {};
+    articles.forEach(article => {
+      wordsArticlesObj[article.words] = [];
+      submittedArticlesObj[article.publish_at] = [];
+    });
+    articles.forEach(article => {
+      wordsArticlesObj[article.words].push(article);
+      submittedArticlesObj[article.publish_at].push(article);
+    });
+    // Create arrays of articles sorted and reverse-sorted by word count
+    let wordsSortedArticles = [];
+    let wordsArticlesObjKeys = Object.keys(wordsArticlesObj);
+    wordsArticlesObjKeys.forEach(key => {
+      wordsSortedArticles = wordsSortedArticles.concat(wordsArticlesObj[key]);
+    });
+    let wordsReverseSortedArticles = wordsSortedArticles.slice(0).reverse();
+    // Create arrays of articles sorted and reverse-sorted by submission
+    let submittedSortedArticles = [];
+    let submittedArticlesObjKeys = Object.keys(submittedArticlesObj).sort();
+    submittedArticlesObjKeys.forEach(key => {
+      submittedSortedArticles = submittedSortedArticles.concat(submittedArticlesObj[key]);
+    });
+    let submittedReverseSortedArticles = submittedSortedArticles.slice(0).reverse();
+    this.setState({
+      'wordsSortedArticles': wordsSortedArticles,
+      'wordsReverseSortedArticles': wordsReverseSortedArticles,
+      'submittedSortedArticles': submittedSortedArticles,
+      'submittedReverseSortedArticles': submittedReverseSortedArticles
+    });
+  }
+
   componentDidMount() {
+    this.createSortedArticleLists();
     if (this.state.loadNumber === 0) {
       this.createArticleRows(1, articles);
       this.setState({loadNumber: 1});

@@ -37,7 +37,7 @@ class App extends Component {
       // this.setState({loadNumber: newLoadNumber});
     } else {
       console.log(this.testXHR());
-      // this.createArticleRows(newLoadNumber, this.testXHR());
+      this.createArticleRows(newLoadNumber, this.testXHR());
       // run createArticleRows with the returned results from testXHR
     }
 
@@ -52,7 +52,7 @@ class App extends Component {
     let newState = this.state;
     // This is to show 10 new articles, or however many articles are remaining if it's less than 10
     let end;
-    if (loadNumber * 10 < arrayOfArticles.length) {
+    if (loadNumber * 10 < arrayOfArticles.length && this.state.beyondBootStrap === false) {
       end = loadNumber * 10
       newState['loadNumber'] = loadNumber + 1;
     } else {

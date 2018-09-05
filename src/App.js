@@ -69,8 +69,8 @@ class App extends Component {
       newState['loadNumber'] = loadNumber + 1;
     } else if (this.state.beyondBootStrap === false) {
       end = arrayOfArticles.length;
-      if (this.testXHR().length === 0) {
-        document.getElementById('load-more').disabled = true;
+      if (this.testXHR().length === 0) { // As in there aren't any "more-articles"
+        document.getElementById('load-more').disabled = true; // Disable the button
       } else {
         newState['loadNumber'] = 1;
         newState['beyondBootStrap'] = true;

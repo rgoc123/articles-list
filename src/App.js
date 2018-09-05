@@ -107,7 +107,15 @@ class App extends Component {
       );
     }
 
+    console.log(arrayOfArticles.slice(0, end));
+    console.log(end);
+    let sortedLists = this.createSortedArticleLists(arrayOfArticles.slice(0, end));
+    console.log(sortedLists);
     newState['articlesList'] = articlesList;
+    newState['wordsSortedArticles'] = sortedLists[0];
+    newState['wordsReverseSortedArticles'] = sortedLists[1];
+    newState['submittedSortedArticles'] = sortedLists[2];
+    newState['submittedReverseSortedArticles'] = sortedLists[3];
     this.setState(newState);
   }
 
@@ -167,17 +175,19 @@ class App extends Component {
 
   // Could just create these every time new articles are generated
   // Replace articles with articlesList
-  createSortedArticleLists() {
+  createSortedArticleLists(arrayOfArticles) {
+    console.log(arrayOfArticles);
     let wordsArticlesObj = {};
     let submittedArticlesObj = {};
-    articles.forEach(article => {
+    arrayOfArticles.forEach(article => {
       wordsArticlesObj[article.words] = [];
       submittedArticlesObj[article.publish_at] = [];
     });
-    articles.forEach(article => {
+    arrayOfArticles.forEach(article => {
       wordsArticlesObj[article.words].push(article);
       submittedArticlesObj[article.publish_at].push(article);
     });
+
     // Create arrays of articles sorted and reverse-sorted by word count
     let wordsSortedArticles = [];
     let wordsArticlesObjKeys = Object.keys(wordsArticlesObj);
@@ -185,6 +195,7 @@ class App extends Component {
       wordsSortedArticles = wordsSortedArticles.concat(wordsArticlesObj[key]);
     });
     let wordsReverseSortedArticles = wordsSortedArticles.slice(0).reverse();
+
     // Create arrays of articles sorted and reverse-sorted by submission
     let submittedSortedArticles = [];
     let submittedArticlesObjKeys = Object.keys(submittedArticlesObj).sort();
@@ -192,16 +203,20 @@ class App extends Component {
       submittedSortedArticles = submittedSortedArticles.concat(submittedArticlesObj[key]);
     });
     let submittedReverseSortedArticles = submittedSortedArticles.slice(0).reverse();
-    this.setState({
-      'wordsSortedArticles': wordsSortedArticles,
-      'wordsReverseSortedArticles': wordsReverseSortedArticles,
-      'submittedSortedArticles': submittedSortedArticles,
-      'submittedReverseSortedArticles': submittedReverseSortedArticles
-    });
+
+    // Add sorted lists to state so they can be reference when clicking
+    // a sort button
+    // this.setState({
+    //   'wordsSortedArticles': wordsSortedArticles,
+    //   'wordsReverseSortedArticles': wordsReverseSortedArticles,
+    //   'submittedSortedArticles': submittedSortedArticles,
+    //   'submittedReverseSortedArticles': submittedReverseSortedArticles
+    // });
+    return [wordsSortedArticles, wordsReverseSortedArticles, submittedSortedArticles,
+      submittedReverseSortedArticles];
   }
 
   componentDidMount() {
-    this.createSortedArticleLists();
     if (this.state.loadNumber === 0) {
       this.createArticleRows(1, articles);
       this.setState({loadNumber: 1});

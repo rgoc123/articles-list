@@ -36,7 +36,6 @@ class App extends Component {
       this.createArticleRows(newLoadNumber, this.state.articles);
       // this.setState({loadNumber: newLoadNumber});
     } else if (this.testXHR().length !== 0) {
-      console.log(this.testXHR());
       this.createArticleRows(newLoadNumber, this.testXHR());
       // run createArticleRows with the returned results from testXHR
     }
@@ -81,6 +80,7 @@ class App extends Component {
     }
     // May need to extend above to set the display state for the load more button
 
+    // Create row components for each articles
     for (let i = 0; i < end; i++) {
       let article = arrayOfArticles[i];
       articlesList.push(
@@ -107,10 +107,10 @@ class App extends Component {
       );
     }
 
-    console.log(arrayOfArticles.slice(0, end));
-    console.log(end);
+    // Create lists of articles sorted and reverse-sorted by words and
+    // submission.
     let sortedLists = this.createSortedArticleLists(arrayOfArticles.slice(0, end));
-    console.log(sortedLists);
+
     newState['articlesList'] = articlesList;
     newState['wordsSortedArticles'] = sortedLists[0];
     newState['wordsReverseSortedArticles'] = sortedLists[1];
@@ -145,7 +145,6 @@ class App extends Component {
           // a conflict on line 72 when we run testXHR to see if it more-
           // articles exist, causing that run to set the button to disabled.
           if (end >= newArticlesJSON.length && this.state.beyondBootStrap === true) {
-            debugger
             document.getElementById('load-more').disabled = true;
           }
           newArticles = oldArticles.concat(newArticlesJSON.slice(0, end));
@@ -176,7 +175,7 @@ class App extends Component {
   // Could just create these every time new articles are generated
   // Replace articles with articlesList
   createSortedArticleLists(arrayOfArticles) {
-    console.log(arrayOfArticles);
+    // console.log(arrayOfArticles);
     let wordsArticlesObj = {};
     let submittedArticlesObj = {};
     arrayOfArticles.forEach(article => {

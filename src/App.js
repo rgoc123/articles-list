@@ -11,8 +11,10 @@ class App extends Component {
       articlesList: [],
       loadNumber: 0,
       beyondBootStrap: false,
+      savedSort: ''
     };
     this.testXHR = this.testXHR.bind(this);
+    // this.state.savedSort = localStorage.get('savedSort') ? localStorage.get('savedSort') : 'none';
   }
 
   // Function for adding more articles
@@ -162,6 +164,7 @@ class App extends Component {
 
   render() {
     console.log(this.state.articlesList);
+    if (localStorage.getItem('savedSort') !== '') console.log(localStorage.getItem('savedSort'));
     // console.log(this.state.loadNumber);
     return (
       <div className="App">
@@ -233,17 +236,23 @@ class App extends Component {
     let newState = this.state;
 
     let newList;
+    // Possibly refactor below to just be 4 if statements for the
+    // different localStorage types
     if (sortCategory === 'words') {
       if (sortType === 'sort') {
         newList = newState['wordsSortedArticles'];
+        localStorage.setItem('savedSort', 'wordsSorted');
       } else {
         newList = newState['wordsReverseSortedArticles'];
+        localStorage.setItem('savedSort', 'wordsRevSorted');
       }
     } else {
       if (sortType === 'sort') {
         newList = newState['submittedSortedArticles'];
+        localStorage.setItem('savedSort', 'submitSorted');
       } else {
         newList = newState['submittedReverseSortedArticles'];
+        localStorage.setItem('savedSort', 'submitRevSorted');
       }
     }
 

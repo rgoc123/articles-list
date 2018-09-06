@@ -11,10 +11,11 @@ class App extends Component {
       articlesList: [],
       loadNumber: 0,
       beyondBootStrap: false,
-      savedSort: ''
+      savedSort: '',
+      clickedSortButton: ''
     };
     this.testXHR = this.testXHR.bind(this);
-    // this.state.savedSort = 
+    // this.state.savedSort =
   }
 
   loadMoreArticles() {
@@ -137,12 +138,12 @@ class App extends Component {
           <div id="article-header">Article</div>
           <div id="author-header">Author</div>
           <div id="words-header">Words
-            <button onClick={() => this.sortArticles('words', 'sort')}>Sort</button>
-            <button onClick={() => this.sortArticles('words', 'reverse')}>Reverse</button>
+            <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}>Sort</button>
+            <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}>Reverse</button>
           </div>
           <div id="submitted-header">Submitted
-            <button onClick={() => this.sortArticles('submitted', 'sort')}>Sort</button>
-            <button onClick={() => this.sortArticles('submitted', 'reverse')}>Reverse</button>
+            <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}>Sort</button>
+            <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}>Reverse</button>
           </div>
         </div>
         <ul>
@@ -191,24 +192,35 @@ class App extends Component {
   sortArticles(sortCategory, sortType) {
     let newState = this.state;
 
+    if (this.state.clickedSortButton !== '') document.getElementById(this.state.clickedSortButton).style.backgroundColor = 'white';
+
     let newList;
     // Possibly refactor below to just be 4 if statements for the
     // different localStorage types
     if (sortCategory === 'words') {
       if (sortType === 'sort') {
+        // Extract all four below into a function with relevant parameters
         newList = newState['wordsSortedArticles'];
         localStorage.setItem('savedSort', 'wordsSorted');
+        document.getElementById('words-sort-button').style.backgroundColor = 'green';
+        newState['clickedSortButton'] = 'words-sort-button';
       } else {
         newList = newState['wordsReverseSortedArticles'];
         localStorage.setItem('savedSort', 'wordsRevSorted');
+        document.getElementById('words-rev-button').style.backgroundColor = 'green';
+        newState['clickedSortButton'] = 'words-rev-button';
       }
     } else {
       if (sortType === 'sort') {
         newList = newState['submittedSortedArticles'];
         localStorage.setItem('savedSort', 'submitSorted');
+        document.getElementById('submit-sort-button').style.backgroundColor = 'green';
+        newState['clickedSortButton'] = 'submit-sort-button';
       } else {
         newList = newState['submittedReverseSortedArticles'];
         localStorage.setItem('savedSort', 'submitRevSorted');
+        document.getElementById('submit-rev-button').style.backgroundColor = 'green';
+        newState['clickedSortButton'] = 'submit-rev-button';
       }
     }
 

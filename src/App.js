@@ -290,10 +290,37 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // if (this.state.loadNumber === 0) {
+    //   this.createArticleRows(1, articles);
+    //   this.setState({loadNumber: 1});
+    // }
+    // get localStorage, save in variable
+    // if savedSort is '' or undefined
+      // run the above
+    // else
+      // if localStorage is this, sortArticles(this)
+
+    let savedSort = localStorage.getItem('savedSort');
+    console.log(savedSort);
+
     if (this.state.loadNumber === 0) {
-      this.createArticleRows(1, articles);
-      this.setState({loadNumber: 1});
+      if (savedSort === '' || savedSort === undefined) {
+        this.createArticleRows(1, articles);
+        this.setState({loadNumber: 1});
+      } else {
+        let arts = this.createSortedArticleLists(articles);
+        console.log(arts);
+        let sortedArts;
+        if (savedSort === 'wordsSorted') sortedArts = arts[0];
+        if (savedSort === 'wordsRevSorted') sortedArts = arts[1];
+        if (savedSort === 'submitSorted') sortedArts = arts[2];
+        if (savedSort === 'submitRevSorted') sortedArts = arts[3];
+        console.log(sortedArts);
+        this.createArticleRows(1, sortedArts);
+        this.setState({loadNumber: 1});
+      }
     }
+
   }
 
 }

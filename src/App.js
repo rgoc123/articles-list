@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import articles from './data/articles';
+import ArticleRow from './components/articleRow';
 
 class App extends Component {
 
@@ -69,30 +70,7 @@ class App extends Component {
     // Create row components for each articles
     for (let i = 0; i < end; i++) {
       let article = arrayOfArticles[i];
-      articlesList.push(
-        <li className="article-li" key={i}>
-          <div className="article-item">
-            <div className="article-info-container">
-              <img src={article.image} alt={article.title} />
-              <div className="article-info">
-                <a href={article.url} target="_blank">{article.title}</a>
-                <div>Shares: {article.shares}</div>
-                <div>Views: {article.views}</div>
-              </div>
-            </div>
-            <div className="author">
-              <div>{article.profile.first_name}</div>
-              <div>{article.profile.last_name}</div>
-            </div>
-            <div className="words">
-              <div>{article.words}</div>
-            </div>
-            <div className="submitted">
-              <div>{article.publish_at}</div>
-            </div>
-          </div>
-        </li>
-      );
+      articlesList.push(<ArticleRow key={i} article={article} />);
     }
 
     // Create lists of articles sorted and reverse-sorted by words and
@@ -239,30 +217,7 @@ class App extends Component {
     let newArticlesList = [];
     for (let i = 0; i < newList.length; i++) {
       let article = newList[i];
-      newArticlesList.push(
-        <li className="article-li" key={i}>
-          <div className="article-item">
-            <div className="article-info-container">
-              <img src={article.image} alt={article.title} />
-              <div className="article-info">
-                <a href={article.url} target="_blank">{article.title}</a>
-                <div>Shares: {article.shares}</div>
-                <div>Views: {article.views}</div>
-              </div>
-            </div>
-            <div className="author">
-              <div>{article.profile.first_name}</div>
-              <div>{article.profile.last_name}</div>
-            </div>
-            <div className="words">
-              <div>{article.words}</div>
-            </div>
-            <div className="submitted">
-              <div>{article.publish_at}</div>
-            </div>
-          </div>
-        </li>
-      );
+      newArticlesList.push(<ArticleRow key={i} article={article} />);
     }
     newState['articlesList'] = newArticlesList;
 

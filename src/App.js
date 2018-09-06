@@ -37,6 +37,18 @@ class App extends Component {
     let newState = this.state;
     let end;
 
+    let sortedLists = this.createSortedArticleLists(arrayOfArticles.slice(0, end));
+    // if this.state.clickedSortButton !== '', then sort arrayOfArticles
+    // based on sort
+    // If they don't want a sort to continue to be applied when more artilces
+    // are loaded, just remove the below for lines and move the above line
+    // back to below the for loop.
+    if (this.state.clickedSortButton === 'words-sort-button') arrayOfArticles = sortedLists[0];
+    if (this.state.clickedSortButton === 'words-rev-button') arrayOfArticles = sortedLists[1];
+    if (this.state.clickedSortButton === 'submit-sort-button') arrayOfArticles = sortedLists[2];
+    if (this.state.clickedSortButton === 'submit-rev-button') arrayOfArticles = sortedLists[3];
+
+
     if (loadNumber * 10 < arrayOfArticles.length && this.state.beyondBootStrap === false) {
       end = loadNumber * 10
       newState['loadNumber'] = loadNumber + 1;
@@ -85,7 +97,6 @@ class App extends Component {
 
     // Create lists of articles sorted and reverse-sorted by words and
     // submission.
-    let sortedLists = this.createSortedArticleLists(arrayOfArticles.slice(0, end));
 
     newState['articlesList'] = articlesList;
     newState['wordsSortedArticles'] = sortedLists[0];
@@ -131,6 +142,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state);
     return (
       <div className="App">
         <h1>Hello World!</h1>
@@ -267,6 +279,15 @@ class App extends Component {
       } else {
         let arts = this.createSortedArticleLists(articles);
 
+        let savedSortButtonLookUp = {
+          wordsSorted: 'words-sort-button',
+          wordsRevSorted: 'words-rev-button',
+          submitSorted: 'submit-sort-button',
+          submitRevSorted: 'submit-rev-button'
+        }
+        let savedSortButtonID = savedSortButtonLookUp[savedSort];
+        document.getElementById(savedSortButtonID).style.backgroundColor = 'green';
+
         let sortedArts;
         if (savedSort === 'wordsSorted') sortedArts = arts[0];
         if (savedSort === 'wordsRevSorted') sortedArts = arts[1];
@@ -274,7 +295,7 @@ class App extends Component {
         if (savedSort === 'submitRevSorted') sortedArts = arts[3];
 
         this.createArticleRows(1, sortedArts);
-        this.setState({loadNumber: 1});
+        this.setState({loadNumber: 1, clickedSortButton: savedSortButtonID});
         // Possibly add set state for sort preference
       }
     }

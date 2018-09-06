@@ -14,56 +14,27 @@ class App extends Component {
       savedSort: ''
     };
     this.testXHR = this.testXHR.bind(this);
-    // this.state.savedSort = localStorage.get('savedSort') ? localStorage.get('savedSort') : 'none';
+    // this.state.savedSort = 
   }
 
-  // Function for adding more articles
-    // Reference state.loadNumber
-    // Append more rows
-    // If there aren't more rows in articles, make call to more articles
-    // If there aren't more in more articles, make button disappear
-
-  // Possible ways to do this:
-    // Append new elements to DOM
-      // Benefit: It might look cleaner
-      // Cost: It'll be more of a pain to code
-    // Have a state key "articles" and add to that
-      // Benefit: It'll be easier to code, and there's probably no
-      // difference in performance.
   loadMoreArticles() {
     // console.log(this.state.loadNumber);
     let newLoadNumber = this.state.loadNumber + 1;
 
     if (this.state.beyondBootStrap === false) {
       this.createArticleRows(newLoadNumber, this.state.articles);
-      // this.setState({loadNumber: newLoadNumber});
     } else if (this.testXHR().length !== 0) {
       this.createArticleRows(newLoadNumber, this.testXHR());
-      // run createArticleRows with the returned results from testXHR
     }
 
   }
 
-
-  // Creates the rows for each article
-  // UPDATE: Probably want to pass in the data source as an argument
-  // to make the function more resuseble.
+  // Creates the rows for each article. Passing arrayOfArticles as an
+  // argument makes the function more resuseble.
   createArticleRows(loadNumber, arrayOfArticles) {
     let articlesList = [];
     let newState = this.state;
-    // This is to show 10 new articles, or however many articles are remaining if it's less than 10
     let end;
-
-    // If beyondBootStrap equals true and loadNumber * 10 > arrayOfArticles.length - articles.length
-    // 1 - 10
-    // 2 - 20
-    // 3 - 30
-    // 4 - 30
-    // If the loadNumber * 10 is greater than the number of new articles, switch button to disabled
-    // 20, 26
-
-    // If loadNumber * 10 is greater than articles.length and testXHR.length is 0 or undefined
-      // set button to disabled
 
     if (loadNumber * 10 < arrayOfArticles.length && this.state.beyondBootStrap === false) {
       end = loadNumber * 10
@@ -127,13 +98,10 @@ class App extends Component {
     let xhttp = new XMLHttpRequest();
     let oldArticles = this.state.articles.slice(0);
     let newArticles = [];
-    // let start = this.state.loadNumber * 10 - 10;
 
     xhttp.onreadystatechange = function() {
       if (xhttp.readyState === 4 && xhttp.status === 200) {
         var obj = xhttp.response;
-        // console.log([start, end]);
-        // console.log(JSON.parse(obj).slice(start, end));
 
         if (obj !== "") {
           let newArticlesJSON = JSON.parse(obj);
@@ -152,7 +120,6 @@ class App extends Component {
             document.getElementById('load-more').disabled = true;
           }
           newArticles = oldArticles.concat(newArticlesJSON.slice(0, end));
-          // return newArticles;
         }
       }
     }.bind(this);
@@ -163,9 +130,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.articlesList);
-    if (localStorage.getItem('savedSort') !== '') console.log(localStorage.getItem('savedSort'));
-    // console.log(this.state.loadNumber);
     return (
       <div className="App">
         <h1>Hello World!</h1>
@@ -192,7 +156,6 @@ class App extends Component {
   // Could just create these every time new articles are generated
   // Replace articles with articlesList
   createSortedArticleLists(arrayOfArticles) {
-    // console.log(arrayOfArticles);
     let wordsArticlesObj = {};
     let submittedArticlesObj = {};
     arrayOfArticles.forEach(article => {
@@ -220,14 +183,7 @@ class App extends Component {
     });
     let submittedReverseSortedArticles = submittedSortedArticles.slice(0).reverse();
 
-    // Add sorted lists to state so they can be reference when clicking
-    // a sort button
-    // this.setState({
-    //   'wordsSortedArticles': wordsSortedArticles,
-    //   'wordsReverseSortedArticles': wordsReverseSortedArticles,
-    //   'submittedSortedArticles': submittedSortedArticles,
-    //   'submittedReverseSortedArticles': submittedReverseSortedArticles
-    // });
+    // Answer why we're returning an array instead of setting state
     return [wordsSortedArticles, wordsReverseSortedArticles, submittedSortedArticles,
       submittedReverseSortedArticles];
   }
@@ -285,23 +241,12 @@ class App extends Component {
       );
     }
     newState['articlesList'] = newArticlesList;
-    // debugger
+
     this.setState(newState);
   }
 
   componentDidMount() {
-    // if (this.state.loadNumber === 0) {
-    //   this.createArticleRows(1, articles);
-    //   this.setState({loadNumber: 1});
-    // }
-    // get localStorage, save in variable
-    // if savedSort is '' or undefined
-      // run the above
-    // else
-      // if localStorage is this, sortArticles(this)
-
     let savedSort = localStorage.getItem('savedSort');
-    console.log(savedSort);
 
     if (this.state.loadNumber === 0) {
       if (savedSort === '' || savedSort === undefined) {
@@ -309,15 +254,16 @@ class App extends Component {
         this.setState({loadNumber: 1});
       } else {
         let arts = this.createSortedArticleLists(articles);
-        console.log(arts);
+
         let sortedArts;
         if (savedSort === 'wordsSorted') sortedArts = arts[0];
         if (savedSort === 'wordsRevSorted') sortedArts = arts[1];
         if (savedSort === 'submitSorted') sortedArts = arts[2];
         if (savedSort === 'submitRevSorted') sortedArts = arts[3];
-        console.log(sortedArts);
+
         this.createArticleRows(1, sortedArts);
         this.setState({loadNumber: 1});
+        // Possibly add set state for sort preference
       }
     }
 

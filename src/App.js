@@ -64,6 +64,7 @@ class App extends Component {
       end = arrayOfArticles.length;
       if (this.testXHR().length === 0) { // As in there aren't any "more-articles"
         document.getElementById('load-more').disabled = true; // Disable the button
+        document.getElementById('load-more').innerHTML = 'No More Articles';
       } else { // Otherwise reset loadNumber for upcoming slicing of 10 "more-articles"
         newState['loadNumber'] = 1;
         newState['beyondBootStrap'] = true;
@@ -115,6 +116,7 @@ class App extends Component {
           // articles exist, causing that run to set the button to disabled.
           if (end >= newArticlesJSON.length && this.state.beyondBootStrap === true) {
             document.getElementById('load-more').disabled = true;
+            document.getElementById('load-more').innerHTML = 'No More Articles';
           }
           newArticles = oldArticles.concat(newArticlesJSON.slice(0, end));
         }
@@ -146,7 +148,7 @@ class App extends Component {
         <ul>
           {this.state.articlesList}
         </ul>
-        <button id="load-more" onClick={() => this.loadMoreArticles()}>Load More</button>
+        <button id="load-more" onClick={() => this.loadMoreArticles()}>Load More Articles</button>
       </div>
     );
   }

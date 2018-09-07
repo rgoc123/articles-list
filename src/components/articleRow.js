@@ -4,7 +4,7 @@ class ArticleRow extends Component {
 
   render() {
     let article = this.props.article;
-    let i = this.props.key;
+    let i = this.props.idx;
     return (
       <li className="article-li" key={i}>
         <div className="article-item">

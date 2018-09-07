@@ -70,7 +70,7 @@ class App extends Component {
     // Create row components for each articles
     for (let i = 0; i < end; i++) {
       let article = arrayOfArticles[i];
-      articlesList.push(<ArticleRow key={i} article={article} />);
+      articlesList.push(<ArticleRow key={i} idx={i} article={article} />);
     }
 
     // Create lists of articles sorted and reverse-sorted by words and
@@ -217,7 +217,7 @@ class App extends Component {
     let newArticlesList = [];
     for (let i = 0; i < newList.length; i++) {
       let article = newList[i];
-      newArticlesList.push(<ArticleRow key={i} article={article} />);
+      newArticlesList.push(<ArticleRow key={i} idx={i} article={article} />);
     }
     let end = this.state.loadNumber * 10 <= newArticlesList.length ? this.state.loadNumber * 10 : newArticlesList.length
     debugger

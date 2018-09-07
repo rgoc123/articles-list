@@ -34,6 +34,7 @@ class App extends Component {
   // Creates the rows for each article. Passing arrayOfArticles as an
   // argument makes the function more resuseble.
   createArticleRows(loadNumber, arrayOfArticles) {
+    console.log("Creating rows");
     let articlesList = [];
     let newState = this.state;
     let end;
@@ -51,13 +52,19 @@ class App extends Component {
 
 
     if (loadNumber * 10 < arrayOfArticles.length && this.state.beyondBootStrap === false) {
+      // Above condition is if we're still referencing original "articles" and adding 10
+      // more articles doesn't exceed "articles" length
       end = loadNumber * 10
-      newState['loadNumber'] = loadNumber + 1;
+      // console.log(loadNumber === 1 ? 2 : loadNumber + 1);
+      console.log(loadNumber);
+      console.log(loadNumber + 1);
+      newState['loadNumber'] = loadNumber === 1 ? 2 : loadNumber + 1;
     } else if (this.state.beyondBootStrap === false) {
+      // If we do exceed "articles" length
       end = arrayOfArticles.length;
       if (this.testXHR().length === 0) { // As in there aren't any "more-articles"
         document.getElementById('load-more').disabled = true; // Disable the button
-      } else {
+      } else { // Otherwise reset loadNumber for upcoming slicing of 10 "more-articles"
         newState['loadNumber'] = 1;
         newState['beyondBootStrap'] = true;
       }
@@ -219,8 +226,8 @@ class App extends Component {
       let article = newList[i];
       newArticlesList.push(<ArticleRow key={i} idx={i} article={article} />);
     }
-    let end = this.state.loadNumber * 10 <= newArticlesList.length ? this.state.loadNumber * 10 : newArticlesList.length
-    
+
+    let end = newState.articlesList.length;
     newState['articlesList'] = newArticlesList.slice(0, end);
 
     this.setState(newState);

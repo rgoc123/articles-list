@@ -13,3 +13,6 @@
 
 - When something needs to happen is just as important a consideration
   as what your building
+- When you're not sure how a feature should work, think about how other
+  websites do it (e.g. with sorting, they don't necessarily store what
+  you see, they return a new list)

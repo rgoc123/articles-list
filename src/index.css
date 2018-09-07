@@ -5,8 +5,8 @@ body {
 }
 
 h1 {
-  margin: 0 0 5px 0;
-  padding: 21px 0;
+  margin: 0;
+  padding: 21px 0 23px 0;
   background-color: black;
   color: #2BFEC0;
 }
@@ -32,8 +32,49 @@ img {
   margin-right: 10px;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+}
+
+.col-headers-container {
+  width: 100%;
+  background-color: black;
+  margin-bottom: 10px;
+}
+
 .col-headers {
   display: flex;
+  margin: 0 auto;
+  padding: 0;
+  width: 97%;
+  color: #2bfec0;
+  font-weight: 800;
+}
+
+.col-headers div {
+  width: 200px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+}
+
+.col-headers span {
+  margin-right: 2px;
+}
+
+.col-headers button {
+  position: relative;
+  width: 15px;
+  height: 15px;
 }
 
 #article-header {
@@ -52,27 +93,6 @@ img {
   width: 15%;
 }
 
-.col-headers {
-  margin: 0 auto;
-  padding: 0;
-  width: 97%;
-}
-
-.col-headers div {
-  width: 200px;
-  height: 50px;
-  text-align: center;
-  line-height: 50px;
-}
-
-.col-headers span {
-  margin-right: 2px;
-}
-
-.col-headers button {
-  position: relative;
-}
-
 .fa-sort-up {
   position: absolute;
   top: 3px;
@@ -89,6 +109,10 @@ img {
   display: flex;
 }
 
+.article-li:first-of-type {
+  border: 0px solid white;
+}
+
 .article-info-container {
   display: flex;
   width: 55%;
@@ -96,6 +120,7 @@ img {
 
 .article-info {
   width: 100%;
+  padding: 5px 0;
 }
 
 .article-link {
@@ -123,8 +148,12 @@ img {
   font-size: 9px;
   background-color: lightgray;
   margin: 0 2px;
-  padding: 2px 2px;
+  padding: 2px 4px;
   border-radius: 4px;
+}
+
+.tag:first-of-type {
+  margin-left: 0px;
 }
 
 .author {

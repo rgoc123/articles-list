@@ -130,17 +130,19 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Policy Mic</h1>
-        <div className="col-headers">
-          <div id="article-header">Articles</div>
-          <div id="author-header">Author</div>
-          <div id="words-header"><span>Words</span>
+        <div className="col-headers-container">
+          <div className="col-headers">
+            <div id="article-header">Articles</div>
+            <div id="author-header">Author</div>
+            <div id="words-header"><span>Words</span>
             <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}><i className="fas fa-sort-up"></i></button>
             <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}><i className="fas fa-sort-down"></i></button>
           </div>
           <div id="submitted-header"><span>Submitted</span>
-            <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i className="fas fa-sort-up"></i></button>
-            <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i className="fas fa-sort-down"></i></button>
-          </div>
+          <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i className="fas fa-sort-up"></i></button>
+          <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i className="fas fa-sort-down"></i></button>
+        </div>
+      </div>
         </div>
         <ul>
           {this.state.articlesList}

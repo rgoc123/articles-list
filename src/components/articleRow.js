@@ -18,17 +18,16 @@ class ArticleRow extends Component {
           <div className="article-info-container">
             <img src={article.image} alt={article.title} />
             <div className="article-info">
-              <a href={article.url} target="_blank">{article.title}</a>
-              <div>Shares: {article.shares}</div>
-              <div>Views: {article.views}</div>
+              <a className="article-link" href={article.url} target="_blank">{article.title}</a>
+              <div className="article-shares">Shares: {article.shares}</div>
+              <div className="article-views">Views: {article.views}</div>
               <div className="tag-container">
                 {createTags()}
               </div>
             </div>
           </div>
           <div className="author">
-            <div>{article.profile.first_name}</div>
-            <div>{article.profile.last_name}</div>
+            <div>{article.profile.first_name} {article.profile.last_name}</div>
           </div>
           <div className="words">
             <div>{article.words}</div>

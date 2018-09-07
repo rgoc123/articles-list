@@ -7,10 +7,14 @@ class ArticleRow extends Component {
     let i = this.props.idx;
 
     function createTags() {
-      return article.tags.map(tag => {
-        return (<div className="tag" key={tag.id}>{tag.name}</div>);
-      });
+      return article.tags.map(tag => (<div className="tag" key={tag.id}>{tag.name}</div>));
     }
+
+    let publishDate = new Date(article.publish_at);
+    let today = new Date(Date.now());
+    let daysAgo = Math.floor(((today - publishDate)/86400000) % 365);
+    let yearsAgo = Math.floor(((today - publishDate)/86400000) / 365);
+    let formattedDate = yearsAgo.toString() + " years " + daysAgo + " days ago";
 
     return (
       <li className="article-li" key={i}>
@@ -33,7 +37,7 @@ class ArticleRow extends Component {
             <div>{article.words}</div>
           </div>
           <div className="submitted">
-            <div>{article.publish_at}</div>
+            <div>{formattedDate}</div>
           </div>
         </div>
       </li>

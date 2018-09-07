@@ -34,7 +34,6 @@ class App extends Component {
   // Creates the rows for each article. Passing arrayOfArticles as an
   // argument makes the function more resuseble.
   createArticleRows(loadNumber, arrayOfArticles) {
-    console.log("Creating rows");
     let articlesList = [];
     let newState = this.state;
     let end;
@@ -56,8 +55,6 @@ class App extends Component {
       // more articles doesn't exceed "articles" length
       end = loadNumber * 10
       // console.log(loadNumber === 1 ? 2 : loadNumber + 1);
-      console.log(loadNumber);
-      console.log(loadNumber + 1);
       newState['loadNumber'] = loadNumber === 1 ? 2 : loadNumber + 1;
     } else if (this.state.beyondBootStrap === false) {
       // If we do exceed "articles" length
@@ -137,12 +134,12 @@ class App extends Component {
           <div id="article-header">Articles</div>
           <div id="author-header">Author</div>
           <div id="words-header"><span>Words</span>
-            <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}><i class="fas fa-sort-up"></i></button>
-            <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}><i class="fas fa-sort-down"></i></button>
+            <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}><i className="fas fa-sort-up"></i></button>
+            <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}><i className="fas fa-sort-down"></i></button>
           </div>
           <div id="submitted-header"><span>Submitted</span>
-            <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i class="fas fa-sort-up"></i></button>
-            <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i class="fas fa-sort-down"></i></button>
+            <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i className="fas fa-sort-up"></i></button>
+            <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i className="fas fa-sort-down"></i></button>
           </div>
         </div>
         <ul>

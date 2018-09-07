@@ -8,7 +8,7 @@ class ArticleRow extends Component {
 
     function createTags() {
       return article.tags.map(tag => {
-        return (<div className="tag">{tag.name}</div>);
+        return (<div className="tag" key={tag.id}>{tag.name}</div>);
       });
     }
 

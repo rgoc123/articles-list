@@ -220,7 +220,7 @@ class App extends Component {
       newArticlesList.push(<ArticleRow key={i} idx={i} article={article} />);
     }
     let end = this.state.loadNumber * 10 <= newArticlesList.length ? this.state.loadNumber * 10 : newArticlesList.length
-    debugger
+    
     newState['articlesList'] = newArticlesList.slice(0, end);
 
     this.setState(newState);

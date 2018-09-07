@@ -66,6 +66,22 @@ img {
   margin-right: 2px;
 }
 
+.col-headers button {
+  position: relative;
+}
+
+.fa-sort-up {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+}
+
+.fa-sort-down {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+}
+
 .article-item {
   display: flex;
 }
@@ -81,16 +97,19 @@ img {
 
 .article-link {
   display: flex;
+  text-align: left;
 }
 
 .article-shares {
   display: flex;
   font-size: 12px;
+  margin: 3px 0;
 }
 
 .article-views {
   display: flex;
   font-size: 12px;
+  margin: 3px 0;
 }
 
 .tag-container {
@@ -98,7 +117,7 @@ img {
 }
 
 .tag {
-  font-size: 12px;
+  font-size: 9px;
   background-color: lightgray;
   margin: 0 2px;
   padding: 2px 2px;
@@ -107,12 +126,15 @@ img {
 
 .author {
   width: 15%;
+  line-height: 90px;
 }
 
 .words {
   width: 15%;
+  line-height: 90px;
 }
 
 .submitted {
   width: 15%;
+  line-height: 90px;
 }

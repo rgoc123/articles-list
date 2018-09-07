@@ -219,7 +219,9 @@ class App extends Component {
       let article = newList[i];
       newArticlesList.push(<ArticleRow key={i} article={article} />);
     }
-    newState['articlesList'] = newArticlesList;
+    let end = this.state.loadNumber * 10 <= newArticlesList.length ? this.state.loadNumber * 10 : newArticlesList.length
+    debugger
+    newState['articlesList'] = newArticlesList.slice(0, end);
 
     this.setState(newState);
   }
@@ -228,7 +230,7 @@ class App extends Component {
     let savedSort = localStorage.getItem('savedSort');
 
     if (this.state.loadNumber === 0) {
-      if (savedSort === '' || savedSort === undefined) {
+      if (savedSort === null) {
         this.createArticleRows(1, articles);
         this.setState({loadNumber: 1});
       } else {

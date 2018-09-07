@@ -5,6 +5,13 @@ class ArticleRow extends Component {
   render() {
     let article = this.props.article;
     let i = this.props.idx;
+
+    function createTags() {
+      return article.tags.map(tag => {
+        return (<div className="tag">{tag.name}</div>);
+      });
+    }
+
     return (
       <li className="article-li" key={i}>
         <div className="article-item">
@@ -14,6 +21,9 @@ class ArticleRow extends Component {
               <a href={article.url} target="_blank">{article.title}</a>
               <div>Shares: {article.shares}</div>
               <div>Views: {article.views}</div>
+              <div className="tag-container">
+                {createTags()}
+              </div>
             </div>
           </div>
           <div className="author">

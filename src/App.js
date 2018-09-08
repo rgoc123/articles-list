@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 import articles from './data/articles';
 
-import { createListOfArticleRows } from './util/helperMethods';
+import { createListOfArticleRows,
+  sortArticles,
+  createArticleRows,
+  loadMoreArticles
+} from './util/helperMethods';
 
 class App extends Component {
 
@@ -16,84 +20,11 @@ class App extends Component {
       clickedSortButton: '',
       ulHeight: window.innerHeight - 203
     };
-    this.testXHR = this.testXHR.bind(this);
+    this.moreArticlesXHRRequest = this.moreArticlesXHRRequest.bind(this);
     this.recalculateULHeight = this.recalculateULHeight.bind(this);
   }
 
-  loadMoreArticles() {
-    // console.log(this.state.loadNumber);
-    let newLoadNumber = this.state.loadNumber + 1;
-
-    if (this.state.beyondBootStrap === false) {
-      this.createArticleRows(newLoadNumber, this.state.articles);
-    } else if (this.testXHR().length !== 0) {
-      this.createArticleRows(newLoadNumber, this.testXHR());
-    }
-
-  }
-
-  // createListOfArticleRows(originalList, newList, end) {
-  //   for (let i = 0; i < end; i++) {
-  //     let article = originalList[i];
-  //     newList.push(<ArticleRow key={i} idx={i} article={article} />);
-  //   }
-  // }
-
-  // Creates the rows for each article. Passing arrayOfArticles as an
-  // argument makes the function more resuseble.
-  createArticleRows(loadNumber, arrayOfArticles) {
-    let newState = this.state;
-    let end;
-
-    let sortedLists = this.createSortedArticleLists(arrayOfArticles.slice(0, end));
-    // if this.state.clickedSortButton !== '', then sort arrayOfArticles
-    // based on sort
-    // If they don't want a sort to continue to be applied when more artilces
-    // are loaded, just remove the below for lines and move the above line
-    // back to below the for loop.
-    if (this.state.clickedSortButton === 'words-sort-button') arrayOfArticles = sortedLists[0];
-    if (this.state.clickedSortButton === 'words-rev-button') arrayOfArticles = sortedLists[1];
-    if (this.state.clickedSortButton === 'submit-sort-button') arrayOfArticles = sortedLists[2];
-    if (this.state.clickedSortButton === 'submit-rev-button') arrayOfArticles = sortedLists[3];
-
-
-    if (loadNumber * 10 < arrayOfArticles.length && this.state.beyondBootStrap === false) {
-      // Above condition is if we're still referencing original "articles" and adding 10
-      // more articles doesn't exceed "articles" length
-      end = loadNumber * 10
-      // console.log(loadNumber === 1 ? 2 : loadNumber + 1);
-      newState['loadNumber'] = loadNumber === 1 ? 2 : loadNumber + 1;
-    } else if (this.state.beyondBootStrap === false) {
-      // If we do exceed "articles" length
-      end = arrayOfArticles.length;
-      if (this.testXHR().length === 0) { // As in there aren't any "more-articles"
-        document.getElementById('load-more').disabled = true; // Disable the button
-        document.getElementById('load-more').innerHTML = 'No More Articles';
-      } else { // Otherwise reset loadNumber for upcoming slicing of 10 "more-articles"
-        newState['loadNumber'] = 1;
-        newState['beyondBootStrap'] = true;
-      }
-    } else {
-      end = arrayOfArticles.length;
-      newState['loadNumber'] += 1;
-    }
-    // May need to extend above to set the display state for the load more button
-
-    let articlesList = [];
-    createListOfArticleRows(arrayOfArticles, articlesList, end);
-
-    // Create lists of articles sorted and reverse-sorted by words and
-    // submission.
-
-    newState['articlesList'] = articlesList;
-    newState['wordsSortedArticles'] = sortedLists[0];
-    newState['wordsReverseSortedArticles'] = sortedLists[1];
-    newState['submittedSortedArticles'] = sortedLists[2];
-    newState['submittedReverseSortedArticles'] = sortedLists[3];
-    this.setState(newState);
-  }
-
-  testXHR() {
+  moreArticlesXHRRequest() {
     let xhttp = new XMLHttpRequest();
     let oldArticles = this.state.articles.slice(0);
     let newArticles = [];
@@ -113,7 +44,7 @@ class App extends Component {
           // This sets the button to disabled if we've added all the articles
           // from more articles. beyondBootStrap is included to ensure that
           // the user is actually beyondBootStrap, otherwise there can be
-          // a conflict on line 72 when we run testXHR to see if it more-
+          // a conflict on line 72 when we run moreArticlesXHRRequest to see if it more-
           // articles exist, causing that run to set the button to disabled.
           if (end >= newArticlesJSON.length && this.state.beyondBootStrap === true) {
             document.getElementById('load-more').disabled = true;
@@ -132,15 +63,12 @@ class App extends Component {
   recalculateULHeight() {
     let newULHeight = window.innerHeight - 203;
     this.setState({ulHeight: newULHeight});
-    // console.log(newULHeight);
   }
 
   render() {
     console.log(this.state);
-    // console.log(document.getElementById('root').offsetHeight);
-    // console.log(document.querySelector("html").offsetHeight);
+
     let ulHeight = this.state.ulHeight;
-    // console.log(window.innerHeight);
 
     return (
       <div className="App">
@@ -150,12 +78,12 @@ class App extends Component {
             <div id="article-header">Articles</div>
             <div id="author-header">Author</div>
             <div id="words-header"><span>Words</span>
-              <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}><i className="fas fa-sort-up"></i></button>
-              <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}><i className="fas fa-sort-down"></i></button>
+              <button id="words-sort-button" onClick={() => sortArticles('words', 'sort', this)}><i className="fas fa-sort-up"></i></button>
+              <button id="words-rev-button" onClick={() => sortArticles('words', 'reverse', this)}><i className="fas fa-sort-down"></i></button>
             </div>
             <div id="submitted-header"><span>Submitted</span>
-              <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i className="fas fa-sort-up"></i></button>
-              <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i className="fas fa-sort-down"></i></button>
+              <button id="submit-sort-button" onClick={() => sortArticles('submitted', 'sort', this)}><i className="fas fa-sort-up"></i></button>
+              <button id="submit-rev-button" onClick={() => sortArticles('submitted', 'reverse', this)}><i className="fas fa-sort-down"></i></button>
             </div>
           </div>
         </div>
@@ -163,7 +91,7 @@ class App extends Component {
           {this.state.articlesList}
         </ul>
         <div className="footer">
-          <button id="load-more" onClick={() => this.loadMoreArticles()}>Load More Articles</button>
+          <button id="load-more" onClick={() => loadMoreArticles(this)}>Load More Articles</button>
         </div>
       </div>
     );
@@ -204,59 +132,14 @@ class App extends Component {
       submittedReverseSortedArticles];
   }
 
-  sortArticles(sortCategory, sortType) {
-    let newState = this.state;
-
-    if (this.state.clickedSortButton !== '') document.getElementById(this.state.clickedSortButton).style.backgroundColor = 'white';
-
-    let newList;
-    // Possibly refactor below to just be 4 if statements for the
-    // different localStorage types
-    if (sortCategory === 'words') {
-      if (sortType === 'sort') {
-        // Extract all four below into a function with relevant parameters
-        newList = newState['wordsSortedArticles'];
-        localStorage.setItem('savedSort', 'wordsSorted');
-        document.getElementById('words-sort-button').style.backgroundColor = '#2BFEC0';
-        newState['clickedSortButton'] = 'words-sort-button';
-      } else {
-        newList = newState['wordsReverseSortedArticles'];
-        localStorage.setItem('savedSort', 'wordsRevSorted');
-        document.getElementById('words-rev-button').style.backgroundColor = '#2BFEC0';
-        newState['clickedSortButton'] = 'words-rev-button';
-      }
-    } else {
-      if (sortType === 'sort') {
-        newList = newState['submittedSortedArticles'];
-        localStorage.setItem('savedSort', 'submitSorted');
-        document.getElementById('submit-sort-button').style.backgroundColor = '#2BFEC0';
-        newState['clickedSortButton'] = 'submit-sort-button';
-      } else {
-        newList = newState['submittedReverseSortedArticles'];
-        localStorage.setItem('savedSort', 'submitRevSorted');
-        document.getElementById('submit-rev-button').style.backgroundColor = '#2BFEC0';
-        newState['clickedSortButton'] = 'submit-rev-button';
-      }
-    }
-
-    let newArticlesList = [];
-    createListOfArticleRows(newList, newArticlesList, newList.length);
-
-    let end = newState.articlesList.length;
-    newState['articlesList'] = newArticlesList.slice(0, end);
-
-    this.setState(newState);
-  }
-
   componentDidMount() {
     let savedSort = localStorage.getItem('savedSort');
 
     window.addEventListener("resize", this.recalculateULHeight);
 
-
     if (this.state.loadNumber === 0) {
       if (savedSort === null) {
-        this.createArticleRows(1, articles);
+        createArticleRows(1, articles, this);
         this.setState({loadNumber: 1});
       } else {
         let arts = this.createSortedArticleLists(articles);
@@ -276,12 +159,11 @@ class App extends Component {
         if (savedSort === 'submitSorted') sortedArts = arts[2];
         if (savedSort === 'submitRevSorted') sortedArts = arts[3];
 
-        this.createArticleRows(1, sortedArts);
+        createArticleRows(1, sortedArts, this);
         this.setState({loadNumber: 1, clickedSortButton: savedSortButtonID});
         // Possibly add set state for sort preference
       }
     }
-
   }
 
 }

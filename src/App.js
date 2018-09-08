@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import articles from './data/articles';
-import ArticleRow from './components/articleRow';
+
+import { createListOfArticleRows } from './util/helperMethods';
 
 class App extends Component {
 
@@ -12,13 +13,11 @@ class App extends Component {
       articlesList: [],
       loadNumber: 0,
       beyondBootStrap: false,
-      savedSort: '',
       clickedSortButton: '',
       ulHeight: window.innerHeight - 203
     };
     this.testXHR = this.testXHR.bind(this);
     this.recalculateULHeight = this.recalculateULHeight.bind(this);
-    // this.state.savedSort =
   }
 
   loadMoreArticles() {
@@ -33,10 +32,16 @@ class App extends Component {
 
   }
 
+  // createListOfArticleRows(originalList, newList, end) {
+  //   for (let i = 0; i < end; i++) {
+  //     let article = originalList[i];
+  //     newList.push(<ArticleRow key={i} idx={i} article={article} />);
+  //   }
+  // }
+
   // Creates the rows for each article. Passing arrayOfArticles as an
   // argument makes the function more resuseble.
   createArticleRows(loadNumber, arrayOfArticles) {
-    let articlesList = [];
     let newState = this.state;
     let end;
 
@@ -74,11 +79,8 @@ class App extends Component {
     }
     // May need to extend above to set the display state for the load more button
 
-    // Create row components for each articles
-    for (let i = 0; i < end; i++) {
-      let article = arrayOfArticles[i];
-      articlesList.push(<ArticleRow key={i} idx={i} article={article} />);
-    }
+    let articlesList = [];
+    createListOfArticleRows(arrayOfArticles, articlesList, end);
 
     // Create lists of articles sorted and reverse-sorted by words and
     // submission.
@@ -238,10 +240,7 @@ class App extends Component {
     }
 
     let newArticlesList = [];
-    for (let i = 0; i < newList.length; i++) {
-      let article = newList[i];
-      newArticlesList.push(<ArticleRow key={i} idx={i} article={article} />);
-    }
+    createListOfArticleRows(newList, newArticlesList, newList.length);
 
     let end = newState.articlesList.length;
     newState['articlesList'] = newArticlesList.slice(0, end);

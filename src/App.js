@@ -215,24 +215,24 @@ class App extends Component {
         // Extract all four below into a function with relevant parameters
         newList = newState['wordsSortedArticles'];
         localStorage.setItem('savedSort', 'wordsSorted');
-        document.getElementById('words-sort-button').style.backgroundColor = 'green';
+        document.getElementById('words-sort-button').style.backgroundColor = '#2BFEC0';
         newState['clickedSortButton'] = 'words-sort-button';
       } else {
         newList = newState['wordsReverseSortedArticles'];
         localStorage.setItem('savedSort', 'wordsRevSorted');
-        document.getElementById('words-rev-button').style.backgroundColor = 'green';
+        document.getElementById('words-rev-button').style.backgroundColor = '#2BFEC0';
         newState['clickedSortButton'] = 'words-rev-button';
       }
     } else {
       if (sortType === 'sort') {
         newList = newState['submittedSortedArticles'];
         localStorage.setItem('savedSort', 'submitSorted');
-        document.getElementById('submit-sort-button').style.backgroundColor = 'green';
+        document.getElementById('submit-sort-button').style.backgroundColor = '#2BFEC0';
         newState['clickedSortButton'] = 'submit-sort-button';
       } else {
         newList = newState['submittedReverseSortedArticles'];
         localStorage.setItem('savedSort', 'submitRevSorted');
-        document.getElementById('submit-rev-button').style.backgroundColor = 'green';
+        document.getElementById('submit-rev-button').style.backgroundColor = '#2BFEC0';
         newState['clickedSortButton'] = 'submit-rev-button';
       }
     }
@@ -269,7 +269,7 @@ class App extends Component {
           submitRevSorted: 'submit-rev-button'
         }
         let savedSortButtonID = savedSortButtonLookUp[savedSort];
-        document.getElementById(savedSortButtonID).style.backgroundColor = 'green';
+        document.getElementById(savedSortButtonID).style.backgroundColor = '#2BFEC0';
 
         let sortedArts;
         if (savedSort === 'wordsSorted') sortedArts = arts[0];

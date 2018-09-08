@@ -15,7 +15,7 @@ ul {
   margin: 0 auto;
   padding: 0;
   width: 97%;
-  height: 450px;
+  /* height: 450px; */
   overflow: auto;
   white-space: normal;
 }
@@ -169,4 +169,8 @@ button {
 .submitted {
   width: 15%;
   line-height: 90px;
+}
+
+.footer {
+  height: 100px;
 }

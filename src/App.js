@@ -13,9 +13,11 @@ class App extends Component {
       loadNumber: 0,
       beyondBootStrap: false,
       savedSort: '',
-      clickedSortButton: ''
+      clickedSortButton: '',
+      ulHeight: window.innerHeight - 234
     };
     this.testXHR = this.testXHR.bind(this);
+    this.recalculateULHeight = this.recalculateULHeight.bind(this);
     // this.state.savedSort =
   }
 
@@ -125,8 +127,19 @@ class App extends Component {
     return newArticles;
   }
 
+  recalculateULHeight() {
+    let newULHeight = window.innerHeight - 234;
+    this.setState({ulHeight: newULHeight});
+    // console.log(newULHeight);
+  }
+
   render() {
     console.log(this.state);
+    // console.log(document.getElementById('root').offsetHeight);
+    // console.log(document.querySelector("html").offsetHeight);
+    let ulHeight = this.state.ulHeight;
+    // console.log(window.innerHeight);
+
     return (
       <div className="App">
         <h1>Policy Mic</h1>
@@ -135,19 +148,21 @@ class App extends Component {
             <div id="article-header">Articles</div>
             <div id="author-header">Author</div>
             <div id="words-header"><span>Words</span>
-            <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}><i className="fas fa-sort-up"></i></button>
-            <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}><i className="fas fa-sort-down"></i></button>
+              <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}><i className="fas fa-sort-up"></i></button>
+              <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}><i className="fas fa-sort-down"></i></button>
+            </div>
+            <div id="submitted-header"><span>Submitted</span>
+              <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i className="fas fa-sort-up"></i></button>
+              <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i className="fas fa-sort-down"></i></button>
+            </div>
           </div>
-          <div id="submitted-header"><span>Submitted</span>
-          <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i className="fas fa-sort-up"></i></button>
-          <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i className="fas fa-sort-down"></i></button>
         </div>
-      </div>
-        </div>
-        <ul>
+        <ul style={{'height': ulHeight}}>
           {this.state.articlesList}
         </ul>
-        <button id="load-more" onClick={() => this.loadMoreArticles()}>Load More Articles</button>
+        <div className="footer">
+          <button id="load-more" onClick={() => this.loadMoreArticles()}>Load More Articles</button>
+        </div>
       </div>
     );
   }
@@ -236,6 +251,9 @@ class App extends Component {
 
   componentDidMount() {
     let savedSort = localStorage.getItem('savedSort');
+
+    window.addEventListener("resize", this.recalculateULHeight);
+
 
     if (this.state.loadNumber === 0) {
       if (savedSort === null) {

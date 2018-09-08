@@ -14,7 +14,7 @@ class App extends Component {
       beyondBootStrap: false,
       savedSort: '',
       clickedSortButton: '',
-      ulHeight: window.innerHeight - 234
+      ulHeight: window.innerHeight - 194
     };
     this.testXHR = this.testXHR.bind(this);
     this.recalculateULHeight = this.recalculateULHeight.bind(this);
@@ -128,7 +128,7 @@ class App extends Component {
   }
 
   recalculateULHeight() {
-    let newULHeight = window.innerHeight - 234;
+    let newULHeight = window.innerHeight - 194;
     this.setState({ulHeight: newULHeight});
     // console.log(newULHeight);
   }

@@ -172,5 +172,11 @@ button {
 }
 
 .footer {
-  height: 100px;
+  height: 50px;
+  background-color: black;
+  margin-top: 10px;
+}
+
+#load-more {
+  margin-top: 13px;
 }

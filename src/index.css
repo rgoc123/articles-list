@@ -18,6 +18,7 @@ ul {
   /* height: 450px; */
   overflow: auto;
   white-space: normal;
+  border: 1px solid lightgray;
 }
 
 li {
@@ -181,7 +182,7 @@ button {
 }
 
 #load-more {
-  margin-top: 13px;
+  margin-top: 16px;
 }
 
 #load-more:disabled {

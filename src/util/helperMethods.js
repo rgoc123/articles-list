@@ -55,13 +55,48 @@ export const sortArticles = (sortCategory, sortType, component) => {
   component.setState(newState);
 }
 
+// Could just create these every time new articles are generated
+// Replace articles with articlesList
+export const createSortedArticleLists = (arrayOfArticles) => {
+  let wordsArticlesObj = {};
+  let submittedArticlesObj = {};
+  arrayOfArticles.forEach(article => {
+    wordsArticlesObj[article.words] = [];
+    submittedArticlesObj[article.publish_at] = [];
+  });
+  arrayOfArticles.forEach(article => {
+    wordsArticlesObj[article.words].push(article);
+    submittedArticlesObj[article.publish_at].push(article);
+  });
+
+  // Create arrays of articles sorted and reverse-sorted by word count
+  let wordsSortedArticles = [];
+  let wordsArticlesObjKeys = Object.keys(wordsArticlesObj);
+  wordsArticlesObjKeys.forEach(key => {
+    wordsSortedArticles = wordsSortedArticles.concat(wordsArticlesObj[key]);
+  });
+  let wordsReverseSortedArticles = wordsSortedArticles.slice(0).reverse();
+
+  // Create arrays of articles sorted and reverse-sorted by submission
+  let submittedSortedArticles = [];
+  let submittedArticlesObjKeys = Object.keys(submittedArticlesObj).sort();
+  submittedArticlesObjKeys.forEach(key => {
+    submittedSortedArticles = submittedSortedArticles.concat(submittedArticlesObj[key]);
+  });
+  let submittedReverseSortedArticles = submittedSortedArticles.slice(0).reverse();
+
+  // Answer why we're returning an array instead of setting state
+  return [wordsSortedArticles, wordsReverseSortedArticles, submittedSortedArticles,
+    submittedReverseSortedArticles];
+}
+
 // Creates the rows for each article. Passing arrayOfArticles as an
 // argument makes the function more resuseble.
 export const createArticleRows = (loadNumber, arrayOfArticles, component) => {
   let newState = component.state;
   let end;
 
-  let sortedLists = component.createSortedArticleLists(arrayOfArticles.slice(0, end));
+  let sortedLists = createSortedArticleLists(arrayOfArticles.slice(0, end));
 
   // If they don't want a sort to continue to be applied when more artilces
   // are loaded, just remove the below for lines and move the above line

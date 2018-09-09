@@ -1,5 +1,6 @@
 import React from 'react';
 import ArticleRow from '../components/articleRow';
+import { moreArticlesXHRRequest } from './xhrUtil.js';
 
 export const createListOfArticleRows = (originalList, newList, end) => {
   for (let i = 0; i < end; i++) {
@@ -9,6 +10,8 @@ export const createListOfArticleRows = (originalList, newList, end) => {
 };
 
 export const sortArticles = (sortCategory, sortType, component) => {
+  // Make this two separate functions: one with logic for sorting, one for handling
+  // stuff in the component (adjust state);
   let newState = component.state;
 
   if (component.state.clickedSortButton !== '') document.getElementById(component.state.clickedSortButton).style.backgroundColor = 'white';
@@ -78,7 +81,7 @@ export const createArticleRows = (loadNumber, arrayOfArticles, component) => {
   } else if (component.state.beyondBootStrap === false) {
     // If we do exceed "articles" length
     end = arrayOfArticles.length;
-    if (component.moreArticlesXHRRequest().length === 0) { // As in there aren't any "more-articles"
+    if (moreArticlesXHRRequest(component).length === 0) { // As in there aren't any "more-articles"
       document.getElementById('load-more').disabled = true; // Disable the button
       document.getElementById('load-more').innerHTML = 'No More Articles';
     } else { // Otherwise reset loadNumber for upcoming slicing of 10 "more-articles"
@@ -110,7 +113,7 @@ export const loadMoreArticles = (component) => {
 
   if (component.state.beyondBootStrap === false) {
     createArticleRows(newLoadNumber, component.state.articles, component);
-  } else if (component.moreArticlesXHRRequest().length !== 0) {
-    createArticleRows(newLoadNumber, component.moreArticlesXHRRequest(), component);
+  } else if (moreArticlesXHRRequest(component).length !== 0) {
+    createArticleRows(newLoadNumber, moreArticlesXHRRequest(component), component);
   }
 }

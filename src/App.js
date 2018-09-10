@@ -3,7 +3,7 @@ import './App.css';
 import articles from './data/articles';
 
 import { createArticleRows,
-  loadMoreArticles,
+  getMoreArticles,
   addSortedArticleListsToState,
   createSortedArticlesList
 } from './util/helperMethods';
@@ -44,7 +44,11 @@ class App extends Component {
         newState['loadNumber'] = 1;
         this.setState(newState);
       } else {
-        addSortedArticleListsToState(articles, savedSort, this);
+        const sortedArticles =  addSortedArticleListsToState(articles, savedSort, this.state);
+        const newState = createArticleRows(1, sortedArticles, this.state);
+        newState['loadNumber'] = 1;
+        // newState['clickedSortButton'];
+        this.setState(newState);
       }
     }
   }
@@ -60,7 +64,8 @@ class App extends Component {
   }
 
   loadMoreArticles() {
-
+    let newState = getMoreArticles(this.state);
+    this.setState(newState);
   }
 
   render() {
@@ -86,7 +91,7 @@ class App extends Component {
           {this.state.articlesList}
         </ul>
         <div className="footer">
-          <button id="load-more" onClick={() => loadMoreArticles(this)}>Load More Articles</button>
+          <button id="load-more" onClick={() => this.loadMoreArticles()}>Load More Articles</button>
         </div>
       </div>
     );

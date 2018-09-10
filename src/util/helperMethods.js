@@ -97,7 +97,7 @@ export const createSortedArticleLists = (arrayOfArticles) => {
     submittedReverseSortedArticles];
 }
 
-export const addSortedArticleListsToState = (articles, savedSort, component) => {
+export const addSortedArticleListsToState = (articles, savedSort, state) => {
   const arts = createSortedArticleLists(articles);
 
   const savedSortButtonLookUp = {
@@ -115,22 +115,23 @@ export const addSortedArticleListsToState = (articles, savedSort, component) => 
   if (savedSort === 'submitSorted') sortedArts = arts[2];
   if (savedSort === 'submitRevSorted') sortedArts = arts[3];
 
-  createArticleRows(1, sortedArts, component);
-  component.setState({loadNumber: 1, clickedSortButton: savedSortButtonID});
+  createArticleRows(1, sortedArts, state);
+  // component.setState({loadNumber: 1, clickedSortButton: savedSortButtonID});
+  return sortedArts;
   // Possibly add set state for sort preference
 }
 
-export const loadMoreArticles = (component) => {
-  const newLoadNumber = component.state.loadNumber + 1;
+export const getMoreArticles = (state) => {
+  const newLoadNumber = state.loadNumber + 1;
 
-  if (component.state.beyondBootStrap === false) {
-    createArticleRows(newLoadNumber, component.state.articles, component);
-  } else if (moreArticlesXHRRequest(component).length !== 0) {
-    createArticleRows(newLoadNumber, moreArticlesXHRRequest(component), component);
+  let newArticles;
+  if (state.beyondBootStrap === false) {
+    newArticles = createArticleRows(newLoadNumber, state.articles, state);
+  } else if (moreArticlesXHRRequest(state).length !== 0) {
+    newArticles = createArticleRows(newLoadNumber, moreArticlesXHRRequest(state), state);
   }
+  return newArticles;
 }
-
-
 
 export const createSortedArticlesList = (sortCategory, sortType, newState) => {
 

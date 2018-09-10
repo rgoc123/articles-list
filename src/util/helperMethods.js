@@ -12,8 +12,8 @@ export const createListOfArticleRows = (originalList, newList, end) => {
 
 // Creates the rows for each article. Passing arrayOfArticles as an
 // argument makes the function more resuseble.
-export const createArticleRows = (loadNumber, arrayOfArticles, component) => {
-  const newState = component.state;
+export const createArticleRows = (loadNumber, arrayOfArticles, state) => {
+  const newState = state;
   let end;
 
   const sortedLists = createSortedArticleLists(arrayOfArticles.slice(0, end));
@@ -21,22 +21,22 @@ export const createArticleRows = (loadNumber, arrayOfArticles, component) => {
   // If they don't want a sort to continue to be applied when more artilces
   // are loaded, just remove the below for lines and move the above line
   // back to below the for loop.
-  if (component.state.clickedSortButton === 'words-sort-button') arrayOfArticles = sortedLists[0];
-  if (component.state.clickedSortButton === 'words-rev-button') arrayOfArticles = sortedLists[1];
-  if (component.state.clickedSortButton === 'submit-sort-button') arrayOfArticles = sortedLists[2];
-  if (component.state.clickedSortButton === 'submit-rev-button') arrayOfArticles = sortedLists[3];
+  if (state.clickedSortButton === 'words-sort-button') arrayOfArticles = sortedLists[0];
+  if (state.clickedSortButton === 'words-rev-button') arrayOfArticles = sortedLists[1];
+  if (state.clickedSortButton === 'submit-sort-button') arrayOfArticles = sortedLists[2];
+  if (state.clickedSortButton === 'submit-rev-button') arrayOfArticles = sortedLists[3];
 
 
-  if (loadNumber * 10 < arrayOfArticles.length && component.state.beyondBootStrap === false) {
+  if (loadNumber * 10 < arrayOfArticles.length && state.beyondBootStrap === false) {
     // Above condition is if we're still referencing original "articles" and adding 10
     // more articles doesn't exceed "articles" length
     end = loadNumber * 10
     // console.log(loadNumber === 1 ? 2 : loadNumber + 1);
     newState['loadNumber'] = loadNumber === 1 ? 2 : loadNumber + 1;
-  } else if (component.state.beyondBootStrap === false) {
+  } else if (state.beyondBootStrap === false) {
     // If we do exceed "articles" length
     end = arrayOfArticles.length;
-    if (moreArticlesXHRRequest(component).length === 0) { // As in there aren't any "more-articles"
+    if (moreArticlesXHRRequest(state).length === 0) { // As in there aren't any "more-articles"
       document.getElementById('load-more').disabled = true; // Disable the button
       document.getElementById('load-more').innerHTML = 'No More Articles';
     } else { // Otherwise reset loadNumber for upcoming slicing of 10 "more-articles"
@@ -60,7 +60,8 @@ export const createArticleRows = (loadNumber, arrayOfArticles, component) => {
   newState['wordsReverseSortedArticles'] = sortedLists[1];
   newState['submittedSortedArticles'] = sortedLists[2];
   newState['submittedReverseSortedArticles'] = sortedLists[3];
-  component.setState(newState);
+  // setState(newState);
+  return newState;
 }
 
 export const createSortedArticleLists = (arrayOfArticles) => {
@@ -119,54 +120,6 @@ export const addSortedArticleListsToState = (articles, savedSort, component) => 
   // Possibly add set state for sort preference
 }
 
-export const sortArticles = (sortCategory, sortType, component) => {
-  // Make this two separate functions: one with logic for sorting, one for handling
-  // stuff in the component (adjust state);
-  const newState = component.state;
-  const clickedSortButton = component.state.clickedSortButton;
-
-  if (clickedSortButton !== '') document.getElementById(component.state.clickedSortButton).style.backgroundColor = 'white';
-  // if (clickedSortButton !== '') newState.sortButtonsColor[] = 'white';
-
-  let newList;
-  // Possibly refactor below to just be 4 if statements for the
-  // different localStorage types
-  if (sortCategory === 'words') {
-    if (sortType === 'sort') {
-      // Extract all four below into a function with relevant parameters
-      newList = newState['wordsSortedArticles'];
-      localStorage.setItem('savedSort', 'wordsSorted');
-      document.getElementById('words-sort-button').style.backgroundColor = '#2BFEC0';
-      newState['clickedSortButton'] = 'words-sort-button';
-    } else {
-      newList = newState['wordsReverseSortedArticles'];
-      localStorage.setItem('savedSort', 'wordsRevSorted');
-      document.getElementById('words-rev-button').style.backgroundColor = '#2BFEC0';
-      newState['clickedSortButton'] = 'words-rev-button';
-    }
-  } else {
-    if (sortType === 'sort') {
-      newList = newState['submittedSortedArticles'];
-      localStorage.setItem('savedSort', 'submitSorted');
-      document.getElementById('submit-sort-button').style.backgroundColor = '#2BFEC0';
-      newState['clickedSortButton'] = 'submit-sort-button';
-    } else {
-      newList = newState['submittedReverseSortedArticles'];
-      localStorage.setItem('savedSort', 'submitRevSorted');
-      document.getElementById('submit-rev-button').style.backgroundColor = '#2BFEC0';
-      newState['clickedSortButton'] = 'submit-rev-button';
-    }
-  }
-
-  const newArticlesList = [];
-  createListOfArticleRows(newList, newArticlesList, newList.length);
-
-  const end = newState.articlesList.length;
-  newState['articlesList'] = newArticlesList.slice(0, end);
-
-  component.setState(newState);
-}
-
 export const loadMoreArticles = (component) => {
   const newLoadNumber = component.state.loadNumber + 1;
 
@@ -176,6 +129,8 @@ export const loadMoreArticles = (component) => {
     createArticleRows(newLoadNumber, moreArticlesXHRRequest(component), component);
   }
 }
+
+
 
 export const createSortedArticlesList = (sortCategory, sortType, newState) => {
 
@@ -215,3 +170,51 @@ export const createSortedArticlesList = (sortCategory, sortType, newState) => {
   createListOfArticleRows(newList, newArticlesList, newList.length);
   return newArticlesList;
 }
+
+// export const sortArticles = (sortCategory, sortType, component) => {
+//   // Make this two separate functions: one with logic for sorting, one for handling
+//   // stuff in the component (adjust state);
+//   const newState = component.state;
+//   const clickedSortButton = component.state.clickedSortButton;
+//
+//   if (clickedSortButton !== '') document.getElementById(component.state.clickedSortButton).style.backgroundColor = 'white';
+//   // if (clickedSortButton !== '') newState.sortButtonsColor[] = 'white';
+//
+//   let newList;
+//   // Possibly refactor below to just be 4 if statements for the
+//   // different localStorage types
+//   if (sortCategory === 'words') {
+//     if (sortType === 'sort') {
+//       // Extract all four below into a function with relevant parameters
+//       newList = newState['wordsSortedArticles'];
+//       localStorage.setItem('savedSort', 'wordsSorted');
+//       document.getElementById('words-sort-button').style.backgroundColor = '#2BFEC0';
+//       newState['clickedSortButton'] = 'words-sort-button';
+//     } else {
+//       newList = newState['wordsReverseSortedArticles'];
+//       localStorage.setItem('savedSort', 'wordsRevSorted');
+//       document.getElementById('words-rev-button').style.backgroundColor = '#2BFEC0';
+//       newState['clickedSortButton'] = 'words-rev-button';
+//     }
+//   } else {
+//     if (sortType === 'sort') {
+//       newList = newState['submittedSortedArticles'];
+//       localStorage.setItem('savedSort', 'submitSorted');
+//       document.getElementById('submit-sort-button').style.backgroundColor = '#2BFEC0';
+//       newState['clickedSortButton'] = 'submit-sort-button';
+//     } else {
+//       newList = newState['submittedReverseSortedArticles'];
+//       localStorage.setItem('savedSort', 'submitRevSorted');
+//       document.getElementById('submit-rev-button').style.backgroundColor = '#2BFEC0';
+//       newState['clickedSortButton'] = 'submit-rev-button';
+//     }
+//   }
+//
+//   const newArticlesList = [];
+//   createListOfArticleRows(newList, newArticlesList, newList.length);
+//
+//   const end = newState.articlesList.length;
+//   newState['articlesList'] = newArticlesList.slice(0, end);
+//
+//   component.setState(newState);
+// }

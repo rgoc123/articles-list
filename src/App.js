@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import articles from './data/articles';
 
-import { sortArticles,
-  createArticleRows,
+import { createArticleRows,
   loadMoreArticles,
   addSortedArticleListsToState,
-  createListOfArticleRows,
   createSortedArticlesList
 } from './util/helperMethods';
 
@@ -42,8 +40,9 @@ class App extends Component {
 
     if (this.state.loadNumber === 0) {
       if (savedSort === null) {
-        createArticleRows(1, articles, this);
-        this.setState({loadNumber: 1});
+        const newState = createArticleRows(1, articles, this.state);
+        newState['loadNumber'] = 1;
+        this.setState(newState);
       } else {
         addSortedArticleListsToState(articles, savedSort, this);
       }
@@ -52,13 +51,16 @@ class App extends Component {
 
   async sortArticles(sortCategory, sortType) {
     const newState = this.state;
-    let newList;
 
     const newArticlesList = await createSortedArticlesList(sortCategory, sortType, newState);
 
     const end = newState.articlesList.length;
     newState['articlesList'] = newArticlesList.slice(0, end);
     this.setState(newState);
+  }
+
+  loadMoreArticles() {
+
   }
 
   render() {

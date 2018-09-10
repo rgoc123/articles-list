@@ -5,7 +5,9 @@ import articles from './data/articles';
 import { sortArticles,
   createArticleRows,
   loadMoreArticles,
-  addSortedArticleListsToState
+  addSortedArticleListsToState,
+  createListOfArticleRows,
+  createSortedArticlesList
 } from './util/helperMethods';
 
 class App extends Component {
@@ -18,7 +20,13 @@ class App extends Component {
       loadNumber: 0,
       beyondBootStrap: false,
       clickedSortButton: '',
-      ulHeight: window.innerHeight - 203
+      ulHeight: window.innerHeight - 203,
+      sortButtonsColor: {
+        'words-sort-button': 'white',
+        'words-rev-button': 'white',
+        'submit-sort-button': 'white',
+        'submit-rev-button': 'white'
+      }
     };
     this.recalculateULHeight = this.recalculateULHeight.bind(this);
   }
@@ -42,6 +50,17 @@ class App extends Component {
     }
   }
 
+  async sortArticles(sortCategory, sortType) {
+    const newState = this.state;
+    let newList;
+
+    const newArticlesList = await createSortedArticlesList(sortCategory, sortType, newState);
+
+    const end = newState.articlesList.length;
+    newState['articlesList'] = newArticlesList.slice(0, end);
+    this.setState(newState);
+  }
+
   render() {
     console.log(this.state);
     return (
@@ -52,12 +71,12 @@ class App extends Component {
             <div id="article-header">Articles</div>
             <div id="author-header">Author</div>
             <div id="words-header"><span>Words</span>
-              <button id="words-sort-button" onClick={() => sortArticles('words', 'sort', this)}><i className="fas fa-sort-up"></i></button>
-              <button id="words-rev-button" onClick={() => sortArticles('words', 'reverse', this)}><i className="fas fa-sort-down"></i></button>
+              <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}><i className="fas fa-sort-up"></i></button>
+              <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}><i className="fas fa-sort-down"></i></button>
             </div>
             <div id="submitted-header"><span>Submitted</span>
-              <button id="submit-sort-button" onClick={() => sortArticles('submitted', 'sort', this)}><i className="fas fa-sort-up"></i></button>
-              <button id="submit-rev-button" onClick={() => sortArticles('submitted', 'reverse', this)}><i className="fas fa-sort-down"></i></button>
+              <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i className="fas fa-sort-up"></i></button>
+              <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i className="fas fa-sort-down"></i></button>
             </div>
           </div>
         </div>

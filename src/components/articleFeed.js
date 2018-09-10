@@ -6,7 +6,7 @@ import { createArticleRows,
   getMoreArticles,
   addSortedArticleListsToState,
   createSortedArticlesList
-} from '../util/helperMethods';
+} from '../util/helperFunctions';
 
 class ArticleFeed extends Component {
 

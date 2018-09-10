@@ -90,7 +90,6 @@ export const createSortedArticleLists = (arrayOfArticles) => {
   });
   const submittedReverseSortedArticles = submittedSortedArticles.slice(0).reverse();
 
-  // Answer why we're returning an array instead of setting state
   return [wordsSortedArticles, wordsReverseSortedArticles, submittedSortedArticles,
     submittedReverseSortedArticles];
 }

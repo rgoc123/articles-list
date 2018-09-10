@@ -18,7 +18,7 @@ This app has three main features:
 #### Sorting
 Sorting is achieved by creating arrays of the articles and then adding them to state. The arrays have the length of the current number of requested articles, and having them instead allows the app to quickly render new lists as the user switches sorts.
 
-```
+```javascript
 // Create arrays of articles sorted and reverse-sorted by word count
 let wordsSortedArticles = [];
 const wordsArticlesObjKeys = Object.keys(wordsArticlesObj);
@@ -39,7 +39,7 @@ const submittedReverseSortedArticles = submittedSortedArticles.slice(0).reverse(
 #### Remembering User's Last Sort
 The app updates local storage with the most recently used sort. The app looks for the saved sort when mounting and is able to load the correct list of articles.
 
-```
+```javascript
 componentDidMount() {
   const savedSort = localStorage.getItem('savedSort');
   window.addEventListener("resize", this.recalculateULHeight);
@@ -63,7 +63,7 @@ componentDidMount() {
 To provide the user with a fast loading experience, the app is pre-populated with a small number of articles. Once the user has loaded all of those articles into their feed, clicking the load more button will make an XHR request to another JSON source.
 
 This function runs to check if the user has loaded all of the pre-populated or "bootstrapped" articles. If they have, then the XHR request is made.
-```
+```javascript
 export const getMoreArticles = (state) => {
   const newLoadNumber = state.loadNumber + 1;
 

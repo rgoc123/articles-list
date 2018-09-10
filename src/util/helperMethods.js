@@ -10,8 +10,6 @@ export const createListOfArticleRows = (originalList, newList, end) => {
   }
 };
 
-// Creates the rows for each article. Passing arrayOfArticles as an
-// argument makes the function more resuseble.
 export const createArticleRows = (loadNumber, arrayOfArticles, state) => {
   const newState = state;
   let end;
@@ -179,51 +177,3 @@ export const createSortedArticlesList = (sortCategory, sortType, newState) => {
   createListOfArticleRows(newList, newArticlesList, newList.length);
   return newArticlesList;
 }
-
-// export const sortArticles = (sortCategory, sortType, component) => {
-//   // Make this two separate functions: one with logic for sorting, one for handling
-//   // stuff in the component (adjust state);
-//   const newState = component.state;
-//   const clickedSortButton = component.state.clickedSortButton;
-//
-//   if (clickedSortButton !== '') document.getElementById(component.state.clickedSortButton).style.backgroundColor = 'white';
-//   // if (clickedSortButton !== '') newState.sortButtonsColor[] = 'white';
-//
-//   let newList;
-//   // Possibly refactor below to just be 4 if statements for the
-//   // different localStorage types
-//   if (sortCategory === 'words') {
-//     if (sortType === 'sort') {
-//       // Extract all four below into a function with relevant parameters
-//       newList = newState['wordsSortedArticles'];
-//       localStorage.setItem('savedSort', 'wordsSorted');
-//       document.getElementById('words-sort-button').style.backgroundColor = '#2BFEC0';
-//       newState['clickedSortButton'] = 'words-sort-button';
-//     } else {
-//       newList = newState['wordsReverseSortedArticles'];
-//       localStorage.setItem('savedSort', 'wordsRevSorted');
-//       document.getElementById('words-rev-button').style.backgroundColor = '#2BFEC0';
-//       newState['clickedSortButton'] = 'words-rev-button';
-//     }
-//   } else {
-//     if (sortType === 'sort') {
-//       newList = newState['submittedSortedArticles'];
-//       localStorage.setItem('savedSort', 'submitSorted');
-//       document.getElementById('submit-sort-button').style.backgroundColor = '#2BFEC0';
-//       newState['clickedSortButton'] = 'submit-sort-button';
-//     } else {
-//       newList = newState['submittedReverseSortedArticles'];
-//       localStorage.setItem('savedSort', 'submitRevSorted');
-//       document.getElementById('submit-rev-button').style.backgroundColor = '#2BFEC0';
-//       newState['clickedSortButton'] = 'submit-rev-button';
-//     }
-//   }
-//
-//   const newArticlesList = [];
-//   createListOfArticleRows(newList, newArticlesList, newList.length);
-//
-//   const end = newState.articlesList.length;
-//   newState['articlesList'] = newArticlesList.slice(0, end);
-//
-//   component.setState(newState);
-// }

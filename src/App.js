@@ -47,7 +47,6 @@ class App extends Component {
         const sortedArticles =  addSortedArticleListsToState(articles, savedSort, this.state);
         const newState = createArticleRows(1, sortedArticles, this.state);
         newState['loadNumber'] = 1;
-        // newState['clickedSortButton'];
         this.setState(newState);
       }
     }
@@ -79,7 +78,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="App">
         <h1>Policy Mic</h1>

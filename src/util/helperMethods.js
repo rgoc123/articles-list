@@ -99,6 +99,7 @@ export const createSortedArticleLists = (arrayOfArticles) => {
 
 export const addSortedArticleListsToState = (articles, savedSort, state) => {
   const arts = createSortedArticleLists(articles);
+  let newState = state;
 
   const savedSortButtonLookUp = {
     wordsSorted: 'words-sort-button',
@@ -107,7 +108,9 @@ export const addSortedArticleListsToState = (articles, savedSort, state) => {
     submitRevSorted: 'submit-rev-button'
   }
   const savedSortButtonID = savedSortButtonLookUp[savedSort];
-  document.getElementById(savedSortButtonID).style.backgroundColor = '#2BFEC0';
+  // document.getElementById(savedSortButtonID).style.backgroundColor = '#2BFEC0';
+  newState['sortButtonsColor'][savedSortButtonID] = '#2BFEC0';
+  newState['clickedSortButton'] = savedSortButtonID;
 
   let sortedArts;
   if (savedSort === 'wordsSorted') sortedArts = arts[0];
@@ -115,7 +118,7 @@ export const addSortedArticleListsToState = (articles, savedSort, state) => {
   if (savedSort === 'submitSorted') sortedArts = arts[2];
   if (savedSort === 'submitRevSorted') sortedArts = arts[3];
 
-  createArticleRows(1, sortedArts, state);
+  createArticleRows(1, sortedArts, newState);
   // component.setState({loadNumber: 1, clickedSortButton: savedSortButtonID});
   return sortedArts;
   // Possibly add set state for sort preference
@@ -137,7 +140,8 @@ export const createSortedArticlesList = (sortCategory, sortType, newState) => {
 
   const clickedSortButton = newState.clickedSortButton;
 
-  if (clickedSortButton !== '') document.getElementById(clickedSortButton).style.backgroundColor = 'white';
+  if (clickedSortButton !== '') newState['sortButtonsColor'][clickedSortButton] = 'white';
+  // document.getElementById(clickedSortButton).style.backgroundColor = 'white';
 
   let newList;
   if (sortCategory === 'words') {
@@ -145,24 +149,28 @@ export const createSortedArticlesList = (sortCategory, sortType, newState) => {
       // Extract all four below into a function with relevant parameters
       newList = newState['wordsSortedArticles'];
       localStorage.setItem('savedSort', 'wordsSorted');
-      document.getElementById('words-sort-button').style.backgroundColor = '#2BFEC0';
+      // document.getElementById('words-sort-button').style.backgroundColor = '#2BFEC0';
+      newState['sortButtonsColor']['words-sort-button'] = '#2BFEC0';
       newState['clickedSortButton'] = 'words-sort-button';
     } else {
       newList = newState['wordsReverseSortedArticles'];
       localStorage.setItem('savedSort', 'wordsRevSorted');
-      document.getElementById('words-rev-button').style.backgroundColor = '#2BFEC0';
+      // document.getElementById('words-rev-button').style.backgroundColor = '#2BFEC0';
+      newState['sortButtonsColor']['words-rev-button'] = '#2BFEC0';
       newState['clickedSortButton'] = 'words-rev-button';
     }
   } else {
     if (sortType === 'sort') {
       newList = newState['submittedSortedArticles'];
       localStorage.setItem('savedSort', 'submitSorted');
-      document.getElementById('submit-sort-button').style.backgroundColor = '#2BFEC0';
+      // document.getElementById('submit-sort-button').style.backgroundColor = '#2BFEC0';
+      newState['sortButtonsColor']['submit-sort-button'] = '#2BFEC0';
       newState['clickedSortButton'] = 'submit-sort-button';
     } else {
       newList = newState['submittedReverseSortedArticles'];
       localStorage.setItem('savedSort', 'submitRevSorted');
-      document.getElementById('submit-rev-button').style.backgroundColor = '#2BFEC0';
+      // document.getElementById('submit-rev-button').style.backgroundColor = '#2BFEC0';
+      newState['sortButtonsColor']['submit-rev-button'] = '#2BFEC0';
       newState['clickedSortButton'] = 'submit-rev-button';
     }
   }

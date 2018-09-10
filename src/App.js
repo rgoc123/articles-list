@@ -58,6 +58,16 @@ class App extends Component {
 
     const newArticlesList = await createSortedArticlesList(sortCategory, sortType, newState);
 
+    // const clickedSortButton = this.state.clickedSortButton;
+    // const clickedSortButtonLookUp = {
+    //   'words-sort-button': wordsSorted,
+    //   'words-rev-button': wordsRevSorted,
+    //   'submit-sort-button': submitSorted,
+    //   'submit-rev-button': submitRevSorted
+    // }
+    //
+    // if (this.state.clickedSortButton !== '') newState.clickedSortButton = 'white';
+
     const end = newState.articlesList.length;
     newState['articlesList'] = newArticlesList.slice(0, end);
     this.setState(newState);
@@ -78,12 +88,16 @@ class App extends Component {
             <div id="article-header">Articles</div>
             <div id="author-header">Author</div>
             <div id="words-header"><span>Words</span>
-              <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}><i className="fas fa-sort-up"></i></button>
-              <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}><i className="fas fa-sort-down"></i></button>
+              <button id="words-sort-button" onClick={() => this.sortArticles('words', 'sort')}
+                style={{'backgroundColor': this.state.sortButtonsColor['words-sort-button']}}><i className="fas fa-sort-up"></i></button>
+              <button id="words-rev-button" onClick={() => this.sortArticles('words', 'reverse')}
+                style={{'backgroundColor': this.state.sortButtonsColor['words-rev-button']}}><i className="fas fa-sort-down"></i></button>
             </div>
             <div id="submitted-header"><span>Submitted</span>
-              <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}><i className="fas fa-sort-up"></i></button>
-              <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}><i className="fas fa-sort-down"></i></button>
+              <button id="submit-sort-button" onClick={() => this.sortArticles('submitted', 'sort')}
+                style={{'backgroundColor': this.state.sortButtonsColor['submit-sort-button']}}><i className="fas fa-sort-up"></i></button>
+              <button id="submit-rev-button" onClick={() => this.sortArticles('submitted', 'reverse')}
+                style={{'backgroundColor': this.state.sortButtonsColor['submit-rev-button']}}><i className="fas fa-sort-down"></i></button>
             </div>
           </div>
         </div>

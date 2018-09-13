@@ -19,6 +19,8 @@ class ArticleFeed extends Component {
       beyondBootStrap: false,
       clickedSortButton: '',
       ulHeight: window.innerHeight - 203,
+      loadMoreDisabled: false,
+      loadMoreInnerHTML: "Load More Articles",
       sortButtonsColor: {
         'words-sort-button': 'white',
         'words-rev-button': 'white',
@@ -102,7 +104,7 @@ class ArticleFeed extends Component {
           {this.state.articlesList}
         </ul>
         <div className="footer">
-          <button id="load-more" onClick={() => this.loadMoreArticles()}>Load More Articles</button>
+          <button id="load-more" onClick={() => this.loadMoreArticles()} disabled={this.state.loadMoreDisabled}>{this.state.loadMoreInnerHTML}</button>
         </div>
       </div>
     );

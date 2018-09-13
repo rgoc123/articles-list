@@ -35,8 +35,8 @@ export const createArticleRows = (loadNumber, arrayOfArticles, state) => {
     // If we do exceed "articles" length
     end = arrayOfArticles.length;
     if (moreArticlesXHRRequest(state).length === 0) { // As in there aren't any "more-articles"
-      document.getElementById('load-more').disabled = true; // Disable the button
-      document.getElementById('load-more').innerHTML = 'No More Articles';
+      newState['loadMoreDisabled'] = true; // Disable the button
+      newState['loadMoreInnerHTML'] = 'No More Articles';
     } else { // Otherwise reset loadNumber for upcoming slicing of 10 "more-articles"
       newState['loadNumber'] = 1;
       newState['beyondBootStrap'] = true;
@@ -105,7 +105,6 @@ export const addSortedArticleListsToState = (articles, savedSort, state) => {
     submitRevSorted: 'submit-rev-button'
   }
   const savedSortButtonID = savedSortButtonLookUp[savedSort];
-  // document.getElementById(savedSortButtonID).style.backgroundColor = '#2BFEC0';
   newState['sortButtonsColor'][savedSortButtonID] = '#2BFEC0';
   newState['clickedSortButton'] = savedSortButtonID;
 
@@ -116,9 +115,7 @@ export const addSortedArticleListsToState = (articles, savedSort, state) => {
   if (savedSort === 'submitRevSorted') sortedArts = arts[3];
 
   createArticleRows(1, sortedArts, newState);
-  // component.setState({loadNumber: 1, clickedSortButton: savedSortButtonID});
   return sortedArts;
-  // Possibly add set state for sort preference
 }
 
 export const getMoreArticles = (state) => {
@@ -138,7 +135,6 @@ export const createSortedArticlesList = (sortCategory, sortType, newState) => {
   const clickedSortButton = newState.clickedSortButton;
 
   if (clickedSortButton !== '') newState['sortButtonsColor'][clickedSortButton] = 'white';
-  // document.getElementById(clickedSortButton).style.backgroundColor = 'white';
 
   let newList;
   if (sortCategory === 'words') {
@@ -146,13 +142,11 @@ export const createSortedArticlesList = (sortCategory, sortType, newState) => {
       // Extract all four below into a function with relevant parameters
       newList = newState['wordsSortedArticles'];
       localStorage.setItem('savedSort', 'wordsSorted');
-      // document.getElementById('words-sort-button').style.backgroundColor = '#2BFEC0';
       newState['sortButtonsColor']['words-sort-button'] = '#2BFEC0';
       newState['clickedSortButton'] = 'words-sort-button';
     } else {
       newList = newState['wordsReverseSortedArticles'];
       localStorage.setItem('savedSort', 'wordsRevSorted');
-      // document.getElementById('words-rev-button').style.backgroundColor = '#2BFEC0';
       newState['sortButtonsColor']['words-rev-button'] = '#2BFEC0';
       newState['clickedSortButton'] = 'words-rev-button';
     }
@@ -160,13 +154,11 @@ export const createSortedArticlesList = (sortCategory, sortType, newState) => {
     if (sortType === 'sort') {
       newList = newState['submittedSortedArticles'];
       localStorage.setItem('savedSort', 'submitSorted');
-      // document.getElementById('submit-sort-button').style.backgroundColor = '#2BFEC0';
       newState['sortButtonsColor']['submit-sort-button'] = '#2BFEC0';
       newState['clickedSortButton'] = 'submit-sort-button';
     } else {
       newList = newState['submittedReverseSortedArticles'];
       localStorage.setItem('savedSort', 'submitRevSorted');
-      // document.getElementById('submit-rev-button').style.backgroundColor = '#2BFEC0';
       newState['sortButtonsColor']['submit-rev-button'] = '#2BFEC0';
       newState['clickedSortButton'] = 'submit-rev-button';
     }
